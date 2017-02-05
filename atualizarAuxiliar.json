@@ -1,0 +1,29 @@
+{
+	"title": "Auxiliar Schema",
+	"type": "object", 
+	"properties":{
+		"nomeAuxiliar":{
+			"type":"string"
+		},
+		"telefoneAuxiliar":{
+			"type":"string"
+		},
+		"emailAuxiliar":{
+			"type":"string"
+		},
+		"enderecoAuxiliar":{
+			"type":"string"
+		},
+		"Estados":{
+			"type":"string"
+		},
+		"Cidade":{
+			"type":"string"
+		},
+		"cpfAuxiliar":{
+			"type":"string"
+		}
+
+	},
+	"required": ["nomeAuxiliar","telefoneAuxiliar","emailAuxiliar","enderecoAuxiliar","Estados","Cidade", "cpfAuxiliar"]
+}

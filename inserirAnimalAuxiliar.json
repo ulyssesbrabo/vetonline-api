@@ -1,0 +1,14 @@
+{
+	"title": "Inserir Animal Auxiliar Schema",
+	"type": "object", 
+	"properties":{
+		"cpfAuxiliar":{
+			"type":"string"
+		},
+		"cpfResponsavel":{
+			"type":"string"
+		}
+
+	},
+	"required": ["cpfAuxiliar","cpfResponsavel"]
+}

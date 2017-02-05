@@ -1,0 +1,32 @@
+{
+	"title": "Medico Schema",
+	"type": "object", 
+	"properties":{
+		"crmv":{
+			"type":"string"
+		},
+		"nomeMedico":{
+			"type":"string"
+		},
+		"perfilMedico":{
+			"type":"string"
+		},
+		"telefoneMedico":{
+			"type":"string"
+		},
+		"emailMedico":{
+			"type":"string"
+		},
+		"Estado":{
+			"type":"integer"
+		},
+		"Cidade":{
+			"type":"integer"
+		},
+		"senhaMedico":{
+			"type":"string"
+		}
+
+	},
+	"required": ["crmv","nomeMedico","perfilMedico","telefoneMedico","emailMedico","Estado","Cidade","senhaMedico"]
+}

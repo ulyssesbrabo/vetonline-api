@@ -1,0 +1,27 @@
+{
+	"title": "Animal Auxiliar Schema",
+	"type": "object", 
+	"properties":{
+		"cpfResponsavel":{
+			"type":"string"
+		},
+		"nomeAnimal":{
+			"type":"string"
+		},
+		"cpfAuxiliar":{
+			"type":"string"
+		},
+		"crmv":{
+			"type":"string"
+		},
+		"Especie":{
+			"type":"integer"
+		},
+		"Raca":{
+			"type":"integer"
+		}
+		
+
+	},
+	"required": ["cpfResponsavel","nomeAnimal","cpfAuxiliar","crmv","Especie","Raca"]
+}

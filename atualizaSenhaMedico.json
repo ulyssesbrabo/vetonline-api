@@ -1,0 +1,14 @@
+{
+	"title": "AtualizaSenhaMedico Schema",
+	"type": "object", 
+	"properties":{
+		"senhaMedico":{
+			"type":"string"
+		},
+		"crmv":{
+			"type":"string"
+		}
+
+	},
+	"required": ["senhaMedico","crmv"]
+}

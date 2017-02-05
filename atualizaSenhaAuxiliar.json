@@ -1,0 +1,13 @@
+{
+	"title": "Senha Auxiliar Schema",
+	"type": "object", 
+	"properties":{
+		"senhaAuxiliar":{
+			"type":"string"
+		},
+		"cpfAuxiliar":{
+			"type":"string"
+		}
+	},
+	"required": ["senhaAuxiliar","cpfAuxiliar"]
+}

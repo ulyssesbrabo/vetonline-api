@@ -1,0 +1,42 @@
+{
+	"title": "Clincia Schema",
+	"type": "object", 
+	"properties":{
+		"cnpj":{
+			"type":"string"
+		},
+		"nomeClinica":{
+			"type":"string"
+		},
+		"enderecoClinica":{
+			"type":"string"
+		},
+		"telefoneClinicaResidencial":{
+			"type":"string"
+		},
+		"telefoneClincaCelular":{
+			"type":"string"
+		},
+		"telefoneClnicaOutros":{
+			"type":"string"
+		},
+		"emailClinica":{
+			"type":"string"
+		},
+		"senhaClinca":{
+			"type":"string"
+		},
+		"perfilClinica":{
+			"type":"string"
+		},
+		"Estados":{
+			"type":"integer"
+		},
+		"Cidade":{
+			"type":"integer"
+		}
+		
+
+	},
+	"required": ["cnpj","nomeClinica","enderecoClinica","telefoneClinicaResidencial","telefoneClincaCelular","telefoneClnicaOutros","emailClinica","senhaClinca","perfilClinica","Estados","Cidade"]
+}

@@ -1,0 +1,14 @@
+{
+	"title": "RespUpdSenha Schema",
+	"type": "object", 
+	"properties":{
+		"senhaResponsavel":{
+			"type":"string"
+		},
+		"cpfResponsavel":{
+			"type":"string"
+		}
+
+	},
+	"required": ["senhaResponsavel","cpfResponsavel"]
+}

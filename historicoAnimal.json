@@ -1,0 +1,14 @@
+{
+	"title": "Historico Animal Schema",
+	"type": "object", 
+	"properties":{
+		"historicoAnimal":{
+			"type":"string"
+		},
+		"crmv":{
+			"type":"string"
+		}
+
+	},
+	"required": ["historicoAnimal","crmv"]
+}

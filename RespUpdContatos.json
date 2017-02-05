@@ -1,0 +1,17 @@
+{
+	"title": "RespUpdContatos Schema",
+	"type": "object", 
+	"properties":{
+		"telefoneResponsavel":{
+			"type":"string"
+		},
+		"emailResponsavel":{
+			"type":"string"
+		},
+		"cpfResponsavel":{
+			"type":"string"
+		}
+
+	},
+	"required": ["telefoneResponsavel","emailResponsavel","cpfResponsavel"]
+}

@@ -1,0 +1,33 @@
+{
+	"title": "Responsavel Schema",
+	"type": "object", 
+	"properties":{
+		"cpfResponsavel":{
+			"type":"string"
+		},
+		"nomeResponsavel":{
+			"type":"string"
+		},
+		"enderecoResponsavel":{
+			"type":"string"
+		},
+		"telefoneResponsavel":{
+			"type":"string"
+		},
+		"emailResponsavel":{
+			"type":"string"
+		},
+		"senhaResponsavel":{
+			"type":"string"
+		},
+		"Estados":{
+			"type":"integer"
+		},
+		"Cidade":{
+			"type":"integer"
+		}
+		
+
+	},
+	"required": ["cpfResponsavel","nomeResponsavel","enderecoResponsavel","telefoneResponsavel","emailResponsavel","senhaResponsavel","Estados","Cidade"]
+}

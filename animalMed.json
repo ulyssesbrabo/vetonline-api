@@ -1,0 +1,23 @@
+{
+	"title": "Animal Medico Schema",
+	"type": "object", 
+	"properties":{
+		"cpfResponsavel":{
+			"type":"string"
+		},
+		"nomeAnimal":{
+			"type":"string"
+		},
+		"crmv":{
+			"type":"string"
+		},
+		"Especie":{
+			"type":"integer"
+		},
+		"Raca":{
+			"type":"integer"
+		}
+		
+	},
+	"required": ["cpfResponsavel","nomeAnimal","crmv","Especie","Raca"]
+}

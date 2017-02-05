@@ -1,0 +1,14 @@
+{
+	"title": "Adicionar Animal Schema",
+	"type": "object", 
+	"properties":{
+		"cpfResponsavel":{
+			"type":"string"
+		},
+		"crmv":{
+			"type":"string"
+		}
+
+	},
+	"required": ["cpfResponsavel","crmv"]
+}
