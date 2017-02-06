@@ -128,7 +128,7 @@ var connection = require('../connection')
 	//Excluir Medico
 	function excluirRegistroResponsavel(responsavel, res) {
 	    connection.acquire(function(err, con) {
-	      con.query( "delete from Responsavel, Animal using Responsavel inner join Animal where Responsavel.cpfResponsavel = Animal.cpfResponsavel and Responsavel.cpfResponsavel = ?", [responsavel.cpfResponsavel],function(err, result) {
+	      con.query( "delete from Responsavel, Animal using Responsavel inner join Animal where Responsavel.cpfResponsavel = Animal.cpfResponsavel and Responsavel.cpfResponsavel = ?", [responsavel.username],function(err, result) {
 	        con.release();
 	        if (err) {
 	          res.send({status: 1, message: 'Failed to delete'});
@@ -140,9 +140,9 @@ var connection = require('../connection')
 	};
 	//Consultas
 	//Perfil do responsavel
-	function perfilResponsavel(cpfResponsavel, res){
+	function perfilResponsavel(usuario, res){
 		connection.acquire(function(err, con){
-			con.query("select Responsavel.cpfResponsavel, nomeResponsavel, enderecoResponsavel, telefoneResponsavel, emailResponsavel, nomeEstados, nomeCidade, nomeAnimal, nomeEspecie, nomeRaca from Animal, Responsavel, Especie_Raca, Especie, Raca, Estado_Cidade, Estados, Cidade where Responsavel.Estados = Estado_Cidade.Estados and Estado_Cidade.Estados = Estados.idEstados and Responsavel.Cidade = Estado_Cidade.Cidade and Estado_Cidade.Cidade = Cidade.idCidade and Animal.Especie = Especie_Raca.Especie and Especie_Raca.Especie = Especie.idEspecie and Animal.Raca = Especie_Raca.Raca and Especie_Raca.Raca = Raca.idRaca and Animal.cpfResponsavel = Responsavel.cpfResponsavel and Responsavel.cpfResponsavel = "+cpfResponsavel+" ", function(err, result){
+			con.query("select Responsavel.cpfResponsavel, nomeResponsavel, enderecoResponsavel, telefoneResponsavel, emailResponsavel, nomeEstados, nomeCidade, nomeAnimal, nomeEspecie, nomeRaca from Animal, Responsavel, Especie_Raca, Especie, Raca, Estado_Cidade, Estados, Cidade where Responsavel.Estados = Estado_Cidade.Estados and Estado_Cidade.Estados = Estados.idEstados and Responsavel.Cidade = Estado_Cidade.Cidade and Estado_Cidade.Cidade = Cidade.idCidade and Animal.Especie = Especie_Raca.Especie and Especie_Raca.Especie = Especie.idEspecie and Animal.Raca = Especie_Raca.Raca and Especie_Raca.Raca = Raca.idRaca and Animal.cpfResponsavel = Responsavel.cpfResponsavel and Responsavel.cpfResponsavel = ?", [usuario.username], function(err, result){
 				con.release();
 				res.json(result);
 			});
@@ -232,27 +232,27 @@ var connection = require('../connection')
 	};
 	//Consultas
 	//Tela dos Auxiliares: medicos que os auxiliares prestam serviços
-	function listarMedicosDosAuxiliares(cpfAuxiliar, res){
+	function listarMedicosDosAuxiliares(usuario, res){
 		connection.acquire(function(err, con){
-			con.query("select crmv, nomeMedico, emailMedico, telefoneMedico from Medico, Auxiliar, Medico_Auxiliar where Medico_Auxiliar.CPFAuxiliar = Auxiliar.cpfAuxiliar and Medico_Auxiliar.CRMVMedico = Medico.crmv and Auxiliar.cpfAuxiliar = "+cpfAuxiliar+"", function(err, result){
+			con.query("select crmv, nomeMedico, emailMedico, telefoneMedico from Medico, Auxiliar, Medico_Auxiliar where Medico_Auxiliar.CPFAuxiliar = Auxiliar.cpfAuxiliar and Medico_Auxiliar.CRMVMedico = Medico.crmv and Auxiliar.cpfAuxiliar = ?", [usuario.username], function(err, result){
 				con.release();
 				res.json(result);
 			});
 		});
 	};
 	//Tela dos Medicos: Perfil dos Médicos
-	function perfilMedico(crmv, res){
+	function perfilMedico(usuario, res){
 		connection.acquire(function(err, con){
-			con.query("select Medico.crmv, nomeMedico, telefoneMedico, emailMedico, perfilMedico, Estados.nomeEstados, Cidade.nomeCidade from Medico, Estado_Cidade, Estados, Cidade where Medico.Estados = Estado_Cidade.Estados and Estado_Cidade.Estados = Estados.idEstados and Medico.Cidade = Estado_Cidade.Cidade and Estado_Cidade.Cidade = Cidade.idCidade and Medico.crmv = "+crmv+"", function(err, result){
+			con.query("select Medico.crmv, nomeMedico, telefoneMedico, emailMedico, perfilMedico, Estados.nomeEstados, Cidade.nomeCidade from Medico, Estado_Cidade, Estados, Cidade where Medico.Estados = Estado_Cidade.Estados and Estado_Cidade.Estados = Estados.idEstados and Medico.Cidade = Estado_Cidade.Cidade and Estado_Cidade.Cidade = Cidade.idCidade and Medico.crmv = ?", [usuario.username], function(err, result){
 				con.release();
 				res.json(result);
 			});
 		});
 	};
 	//Tela dos Responsaveis: Medicos e seus auxiliares
-	function listarMedicoseAuxiliares(cpfResponsavel, res){
+	function listarMedicoseAuxiliares(usuario, res){
 		connection.acquire(function(err, con){
-			con.query("select Medico.crmv, nomeMedico, nomeAuxiliar, telefoneAuxiliar from Medico, Auxiliar, Responsavel, Medico_Auxiliar, Estados where Medico_Auxiliar.CRMVMedico = Medico.crmv and Medico_Auxiliar.CPFAuxiliar = Auxiliar.cpfAuxiliar and Medico.Estados = Responsavel.Estados and Medico.Estados = Estados.idEstados and Responsavel.Estados = Estados.idEstados and Responsavel.cpfResponsavel = "+cpfResponsavel+"", function(err, result){
+			con.query("select Medico.crmv, nomeMedico, nomeAuxiliar, telefoneAuxiliar from Medico, Auxiliar, Responsavel, Medico_Auxiliar, Estados where Medico_Auxiliar.CRMVMedico = Medico.crmv and Medico_Auxiliar.CPFAuxiliar = Auxiliar.cpfAuxiliar and Medico.Estados = Responsavel.Estados and Medico.Estados = Estados.idEstados and Responsavel.Estados = Estados.idEstados and Responsavel.cpfResponsavel = ?", [usuario.username], function(err, result){
 				con.release();
 				res.json(result);
 			});
@@ -333,18 +333,18 @@ var connection = require('../connection')
 	};
 	//Consultas
 	//tela medicos: auxiliares dos medicos
-	function listarAuxiliaresDoMedicos(crmv, res){
+	function listarAuxiliaresDoMedicos(usuario, res){
 		connection.acquire(function(err, con){
-			con.query('select Auxiliar.cpfAuxiliar, nomeAuxiliar, emailAuxiliar, telefoneAuxiliar from Auxiliar, Medico, Medico_Auxiliar where Medico_Auxiliar.CRMVMedico = Medico.crmv and Auxiliar.cpfAuxiliar = Medico_Auxiliar.CPFAuxiliar and Medico.crmv=?', [crmv], function(err, result){
+			con.query('select Auxiliar.cpfAuxiliar, nomeAuxiliar, emailAuxiliar, telefoneAuxiliar from Auxiliar, Medico, Medico_Auxiliar where Medico_Auxiliar.CRMVMedico = Medico.crmv and Auxiliar.cpfAuxiliar = Medico_Auxiliar.CPFAuxiliar and Medico.crmv=?', [usuario.username], function(err, result){
 				con.release();
 				res.json(result);
 			});
 		});
 	};
 	//Tela dos medicos: auxiliares cadastrados no mesmo estado dos medicos
-	function listarAuxiliaresCadastrados(crmv, res){
+	function listarAuxiliaresCadastrados(usuario, res){
 		connection.acquire(function(err, con){
-			con.query('select Auxiliar.cpfAuxiliar, nomeAuxiliar, emailAuxiliar, telefoneAuxiliar, Estados.nomeEstados from Auxiliar, Medico, Medico_Auxiliar, Estados where Medico.Estados = Estados.idEstados and Auxiliar.Estados = Estados.idEstados and Auxiliar.cpfAuxiliar = Medico_Auxiliar.CPFAuxiliar and Medico_Auxiliar.CRMVMedico = Medico.crmv and Medico.crmv=?', [crmv], function(err, result){
+			con.query('select Auxiliar.cpfAuxiliar, nomeAuxiliar, emailAuxiliar, telefoneAuxiliar, Estados.nomeEstados from Auxiliar, Medico, Medico_Auxiliar, Estados where Medico.Estados = Estados.idEstados and Auxiliar.Estados = Estados.idEstados and Auxiliar.cpfAuxiliar = Medico_Auxiliar.CPFAuxiliar and Medico_Auxiliar.CRMVMedico = Medico.crmv and Medico.crmv=?', [usuario.username], function(err, result){
 				con.release();
 				res.json(result);
 			});
@@ -461,9 +461,9 @@ var connection = require('../connection')
 	//Consultas
 	//Tela Auxiliar: animais dos médico que o auxiliar presta serviço
 	//listarAnimaisDosMedicosAuxiliares
-	function listarAnimaisDosMedicosAuxiliares (cpfAuxiliar, res){
+	function listarAnimaisDosMedicosAuxiliares (usuario, res){
 		connection.acquire(function(err, con){
-			con.query("select nomeAnimal, nomeEspecie, nomeRaca, crmv, nomeMedico, telefoneMedico from Animal, Medico, Auxiliar, Medico_Auxiliar, Especie, Raca where Animal.Especie = Especie.idEspecie and Animal.Raca = Raca.idRaca and Medico_Auxiliar.CPFAuxiliar = Auxiliar.cpfAuxiliar and Medico_Auxiliar.CRMVMedico = Medico.crmv and Animal.crmvMedico = Medico.crmv and Auxiliar.cpfAuxiliar = "+cpfAuxiliar+"", function(err, result){
+			con.query("select nomeAnimal, nomeEspecie, nomeRaca, crmv, nomeMedico, telefoneMedico from Animal, Medico, Auxiliar, Medico_Auxiliar, Especie, Raca where Animal.Especie = Especie.idEspecie and Animal.Raca = Raca.idRaca and Medico_Auxiliar.CPFAuxiliar = Auxiliar.cpfAuxiliar and Medico_Auxiliar.CRMVMedico = Medico.crmv and Animal.crmvMedico = Medico.crmv and Auxiliar.cpfAuxiliar = ?", [usuario.username], function(err, result){
 				con.release();
 				res.json(result);
 			});
@@ -471,9 +471,9 @@ var connection = require('../connection')
 	};
 	//Tela Auxiliar: animais que os auxiliares estão relacionados
 	//listarAnimaisDosAuxiliares
-	function listarAnimaisDosAuxiliares (cpfAuxiliar, res){
+	function listarAnimaisDosAuxiliares (usuario, res){
 		connection.acquire(function(err, con){
-			con.query("select nomeAnimal, nomeEspecie, nomeRaca, nomeResponsavel, telefoneResponsavel from Animal, Responsavel, Auxiliar, Especie, Raca where Animal.Especie = Especie.idEspecie and Animal.Raca = Raca.idRaca and Animal.cpfResponsavel = Responsavel.cpfResponsavel and Animal.cpfAuxiliar = Auxiliar.cpfAuxiliar and Auxiliar.cpfAuxiliar = "+cpfAuxiliar+"", function(err, result){
+			con.query("select nomeAnimal, nomeEspecie, nomeRaca, nomeResponsavel, telefoneResponsavel from Animal, Responsavel, Auxiliar, Especie, Raca where Animal.Especie = Especie.idEspecie and Animal.Raca = Raca.idRaca and Animal.cpfResponsavel = Responsavel.cpfResponsavel and Animal.cpfAuxiliar = Auxiliar.cpfAuxiliar and Auxiliar.cpfAuxiliar = ?", [usuario.username], function(err, result){
 				con.release();
 				res.json(result);
 			});
@@ -481,9 +481,9 @@ var connection = require('../connection')
 	};
 	//Tela Responsavel: animais dos responsaveis
 	//listarAnimaisResponsavel
-	function listarAnimaisResponsavel (cpfResponsavel,res){
+	function listarAnimaisResponsavel (usuario,res){
 		connection.acquire(function(err, con){
-			con.query("select nomeAnimal, Especie.nomeEspecie, Raca.nomeRaca from Animal, Especie, Raca, Responsavel where Animal.Especie = Especie.idEspecie and Animal.Raca = Raca.idRaca and Animal.cpfResponsavel = Responsavel.cpfResponsavel and Responsavel.cpfResponsavel = "+cpfResponsavel+"", function(err, result){
+			con.query("select nomeAnimal, Especie.nomeEspecie, Raca.nomeRaca from Animal, Especie, Raca, Responsavel where Animal.Especie = Especie.idEspecie and Animal.Raca = Raca.idRaca and Animal.cpfResponsavel = Responsavel.cpfResponsavel and Responsavel.cpfResponsavel = ?", [usuario.username], function(err, result){
 				con.release();
 				res.json(result);
 			});
@@ -491,9 +491,9 @@ var connection = require('../connection')
 	};
 	//Tela Médico; lista os animais dos medicos
 	//listarAnimaisMedico
-	function listarAnimaisMedico (crmv, res){
+	function listarAnimaisMedico (usuario, res){
 		connection.acquire(function(err, con){
-			con.query("select nomeAnimal, Especie.nomeEspecie, Raca.nomeRaca, Responsavel. nomeResponsavel, Responsavel.telefoneResponsavel from Animal, Especie, Raca, Responsavel, Medico where Animal.Especie = Especie.idEspecie and Animal.Raca = Raca.idRaca and Animal.crmvMedico = Medico.crmv and Animal.cpfResponsavel = Responsavel.cpfResponsavel and Medico.crmv = "+crmv+"", function(err, result){
+			con.query("select nomeAnimal, Especie.nomeEspecie, Raca.nomeRaca, Responsavel. nomeResponsavel, Responsavel.telefoneResponsavel from Animal, Especie, Raca, Responsavel, Medico where Animal.Especie = Especie.idEspecie and Animal.Raca = Raca.idRaca and Animal.crmvMedico = Medico.crmv and Animal.cpfResponsavel = Responsavel.cpfResponsavel and Medico.crmv = ?", [usuario.username], function(err, result){
 				con.release();
 				res.json(result);
 			});
@@ -501,9 +501,9 @@ var connection = require('../connection')
 	};
 	//Tela Médico: animais cadastrados na mesma cidade que o médico
 	//listarAnimaisCadastrados
-	function listarAnimaisCadastrados (crmv, res){
+	function listarAnimaisCadastrados (usuario, res){
 		connection.acquire(function(err, con){
-			con.query("select nomeAnimal, Especie.nomeEspecie, Raca.nomeRaca, Responsavel.nomeResponsavel, Responsavel.telefoneResponsavel from Animal, Responsavel, Estados, Medico, Especie, Raca where Animal.Especie = Especie.idEspecie and Animal.Raca = Raca.idRaca and Animal.cpfResponsavel = Responsavel.cpfResponsavel and Responsavel.Estados = Estados.idEstados and Medico.Estados = Estados.idEstados and Responsavel.Estados = Medico.Estados and Medico.crmv = "+crmv+"", function(err, result){
+			con.query("select nomeAnimal, Especie.nomeEspecie, Raca.nomeRaca, Responsavel.nomeResponsavel, Responsavel.telefoneResponsavel from Animal, Responsavel, Estados, Medico, Especie, Raca where Animal.Especie = Especie.idEspecie and Animal.Raca = Raca.idRaca and Animal.cpfResponsavel = Responsavel.cpfResponsavel and Responsavel.Estados = Estados.idEstados and Medico.Estados = Estados.idEstados and Responsavel.Estados = Medico.Estados and Medico.crmv = ?", [usuario.username], function(err, result){
 				con.release();
 				res.json(result);
 			});
@@ -531,32 +531,40 @@ var connection = require('../connection')
 
 ///////////////////////////////////////////////////Autenticação//////////////////////////////////////////////////////////////////////////////////////////////////	
 
-	function autenticaçãoDoMedico(usuario, res){
-			connection.acquire(function(err, con){
-				con.query("select Medico.crmv, Medico.nomeMedico, Estados.nomeEstados, Cidade.nomeCidade from Medico, Estado_Cidade, Estados, Cidade where Medico.Estados = Estado_Cidade.Estados and Medico.Cidade = Estado_Cidade.Cidade and Estado_Cidade.Estados = Estados.idEstados and Estado_Cidade.Cidade = Cidade.idCidade and Medico.crmv = ? and Medico.senhaMedico = ?", [usuario.crmv, usuario.senhaMedico], function(err, result){
-					con.release();
-					res.json(result);
-				});
+	function autenticacaoDoMedico(usuario, res){
+		connection.acquire(function(err, con){
+			con.query("select Medico.crmv, Medico.nomeMedico from Medico where Medico.crmv = ? and Medico.senhaMedico = ?", [usuario.username, usuario.password], function(err, result){
+				con.release();
+				res.json(result);
 			});
-		};
+		});
+	};
 
-	function autenticaçãoDoAuxiliar(usuario, res){
-			connection.acquire(function(err, con){
-				con.query("select Auxiliar.cpfAuxiliar, Auxiliar.nomeAuxiliar, Estados.nomeEstados, Cidade.nomeCidade from Auxiliar, Estado_Cidade, Estados, Cidade where Auxiliar.Estados = Estado_Cidade.Estados and Auxiliar.Cidade = Estado_Cidade.Cidade and Estado_Cidade.Estados = Estados.idEstados and Estado_Cidade.Cidade = Cidade.idCidade and Auxiliar.cpfAuxiliar = ? and Auxiliar.senhaAuxiliar = ?", [usuario.cpfAuxiliar, usuario.senhaAuxiliar], function(err, result){
-					con.release();
-					res.json(result);
-				});
+	function autenticacaoDoAuxiliar(usuario, res){
+		connection.acquire(function(err, con){
+			con.query("select Auxiliar.cpfAuxiliar, Auxiliar.nomeAuxiliar from Auxiliar where Auxiliar.cpfAuxiliar = ? and Auxiliar.senhaAuxiliar = ?", [usuario.username, usuario.password], function(err, result){
+				con.release();
+				res.json(result);
 			});
-		};
+		});
+	};
 
 	function autenticacaoDoResponsavel(usuario, res){	
-			connection.acquire(function(err, con){
-				con.query("select Responsavel.cpfResponsavel, Responsavel.nomeResponsavel, Estados.nomeEstados, Cidade.nomeCidade from Responsavel, Estados, Cidade, Estado_Cidade where Responsavel.Estados = Estado_Cidade.Estados and Responsavel.Cidade = Estado_Cidade.Cidade and Estado_Cidade.Estados= Estados.idEstados and Estado_Cidade.Cidade = Cidade.idCidade and cpfResponsavel = ? and senhaResponsavel = ?", [usuario.cpfResponsavel, usuario.senhaResponsavel], function(err, result){
-					con.release();
-					res.json(result);
-				});
+		connection.acquire(function(err, con){
+			con.query("select Responsavel.cpfResponsavel, Responsavel.nomeResponsavel from Responsavel where cpfResponsavel = ? and senhaResponsavel = ?", [usuario.username, usuario.password], function(err, result){
+				con.release();
+				res.json(result);
 			});
-		};
+		});
+	};
+	function autenticacaoClinica(usuario, res){
+		connection.acquire(function(err, con){
+			con.query("select Clinica.cnpj, Clinica.nomeClinica from Clinica where Clinica.cnpj = ? and Clinica.senhaClinca = ?", [usuario.username, usuario.password], function(err, result){
+				con.release();
+				res.json(result);
+			});
+		});
+	};
 
 
 
@@ -605,7 +613,10 @@ module.exports = {
 	 listarAnimaisCadastrados :  listarAnimaisCadastrados,
 	 listaEstados : listaEstados,
 	 listaCidadeEstados : listaCidadeEstados,
-	 autenticaçãoDeUsuario : autenticaçãoDeUsuario
+	 autenticacaoDoMedico : autenticacaoDoMedico,
+	 autenticacaoDoAuxiliar : autenticacaoDoAuxiliar,
+	 autenticacaoDoResponsavel : autenticacaoDoResponsavel,
+	 autenticacaoClinica : autenticacaoClinica
 };
 
 

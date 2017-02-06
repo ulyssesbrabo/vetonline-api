@@ -19,7 +19,10 @@ var inserirAnimalAuxiliarSchema = require("./inserirAnimalAuxiliar.json");
 var clinicaSchema = require("./clinica.json");
 var animalMedSchema = require("./animalMed.json");
 var cadastroAniAuxSchema = require("./cadastroAniAux.json");
-
+var autenticacaoMedicoSchema = require("./autenticacaoMedico.json");
+var autenticacaoAuxiliarSchema = require("./autenticacaoAuxiliar.json");
+var autenticacaoResponsavelSchema = require("./autenticacaoResponsavel.json");
+var autenticacaoClinicaSchema = require("./autenticacaoClinica.json");
 
 
 module.exports = {	
@@ -61,19 +64,19 @@ module.exports = {
 			funBase.excluirRegistroResponsavel(responsavel, res);
 		});
 
-		app.get('/perfilResponsavel/:cpfResponsavel', function(req,res, next){  
-			var cpfResponsavel = req.params.cpfResponsavel;
-			funBase.perfilResponsavel(cpfResponsavel, res);
+		app.get('/perfilResponsavel', function(req,res, next){  
+			var usuario = req.body;
+			funBase.perfilResponsavel(usuario, res);
 		});
 
-		app.get('/Medicos&Auxiliares/:cpfResponsavel', function(req,res, next){  
-			var cpfResponsavel = req.params.cpfResponsavel;
-			funBase.listarMedicoseAuxiliares(cpfResponsavel, res);
+		app.get('/Medicos&Auxiliares', function(req,res, next){  
+			var usuario = req.body;
+			funBase.listarMedicoseAuxiliares(usuario, res);
 		});
 
-		app.get('/AnimaisResponsavel/:cpfResponsavel', function(req,res, next){  
-			var cpfResponsavel = req.params.cpfResponsavel;
-			funBase.listarAnimaisResponsavel(cpfResponsavel, res);
+		app.get('/AnimaisResponsavel', function(req,res, next){  
+			var usuario = req.body;
+			funBase.listarAnimaisResponsavel(usuario, res);
 		});
 //////////////////////////Tela Medicos///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////		
 		
@@ -135,29 +138,29 @@ module.exports = {
 			funBase.excluirMedico(crmv, res);
 		});
 
-		app.get('/perfilMedico/:crmv', function(req,res, next){  
-			var crmv = req.params.crmv;
-			funBase.perfilMedico(crmv, res);
+		app.get('/perfilMedico', function(req,res, next){  
+			var usuario = req.body;
+			funBase.perfilMedico(usuario, res);
 		});
 
-		app.get('/auxiliaresMedicos/:crmv', function(req,res, next){  
-			var crmv = req.params.crmv;
-			funBase.listarAuxiliaresDoMedicos(crmv, res);
+		app.get('/auxiliaresMedicos', function(req,res, next){  
+			var usuario = req.body;
+			funBase.listarAuxiliaresDoMedicos(usuario, res);
 		});
 
-		app.get('/auxiliaresCadastrados/:crmv', function(req,res, next){  
-			var crmv = req.params.crmv;
-			funBase.listarAuxiliaresCadastrados(crmv, res);
+		app.get('/auxiliaresCadastrados', function(req,res, next){  
+			var usuario = req.body;
+			funBase.listarAuxiliaresCadastrados(usuario, res);
 		});
 
-		app.get('/animaisMedico/:crmv', function(req,res, next){  
-			var crmv = req.params.crmv;
-			funBase.listarAnimaisMedico(crmv, res);
+		app.get('/animaisMedico', function(req,res, next){  
+			var usuario = req.body;
+			funBase.listarAnimaisMedico(usuario, res);
 		});
 
-		app.get('/animaisCadastrados/:crmv', function(req,res, next){  
-			var crmv = req.params.crmv;
-			funBase.listarAnimaisCadastrados(crmv, res);
+		app.get('/animaisCadastrados', function(req,res, next){  
+			var usuario = req.body;
+			funBase.listarAnimaisCadastrados(usuario, res);
 		});
 //////////////////////////Tela Auxiliar////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////		
 
@@ -196,19 +199,19 @@ module.exports = {
 			funBase.excluirAuxiliar(cpfAuxiliar, res);
 		});
 
-		app.get('/medicosAuxiliares/:cpfAuxiliar', function(req,res, next){  
-			var cpfAuxiliar = req.params.cpfAuxiliar;
-			funBase.listarMedicosDosAuxiliares(cpfAuxiliar, res);
+		app.get('/medicosAuxiliares', function(req,res, next){  
+			var usuario = req.body;
+			funBase.listarMedicosDosAuxiliares(usuario, res);
 		});
 
-		app.get('/animaisDosMedicos/:cpfAuxiliar', function(req,res, next){  
-			var cpfAuxiliar = req.params.cpfAuxiliar;
-			funBase.listarAnimaisDosMedicosAuxiliares(cpfAuxiliar, res);
+		app.get('/animaisDosMedicos', function(req,res, next){  
+			var usuario = req.body;
+			funBase.listarAnimaisDosMedicosAuxiliares(usuario, res);
 		});
 
-		app.get('/animaisAuxiliares/:cpfAuxiliar', function(req,res, next){  
-			var cpfAuxiliar = req.params.cpfAuxiliar;
-			funBase.listarAnimaisDosAuxiliares(cpfAuxiliar, res);
+		app.get('/animaisAuxiliares', function(req,res, next){  
+			var usuario = req.body;
+			funBase.listarAnimaisDosAuxiliares(usuario, res);
 		});
 //////////////////////////Tela Clinica///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////		
 
@@ -230,23 +233,27 @@ module.exports = {
 
 		app.get('/autenticacaoMedico', function(req,res, next){  
 			var usuario = req.body;
-			funBase.autenticaçãoDoMedico(usuario, res);
+			js.validate(usuario, autenticacaoMedicoSchema);
+			funBase.autenticacaoDoMedico(usuario, res);
 		});
 
 		app.get('/autenticacaoAuxiliar', function(req,res, next){  
 			var usuario = req.body;
-			funBase.autenticaçãoDoAuxiliar(usuario, res);
+			js.validate(usuario, autenticacaoAuxiliarSchema);
+			funBase.autenticacaoDoAuxiliar(usuario, res);
 		});
 
 		app.get('/autenticacaoResponsavel', function(req,res, next){  
 			var usuario = req.body;
+			js.validate(usuario, autenticacaoResponsavelSchema);
 			funBase.autenticacaoDoResponsavel(usuario, res);
 		});
 
-
-
-
-
+		app.get('/autenticacaoClinica', function(req,res, next){  
+			var usuario = req.body;
+			js.validate(usuario, autenticacaoClinicaSchema);
+			funBase.autenticacaoClinica(usuario, res);
+		});
 	}
 };
 
