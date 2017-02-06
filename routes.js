@@ -60,8 +60,8 @@ module.exports = {
 		});
 
 		app.delete('/excluirResponsavel', function(req,res, next){
-			var responsavel = req.body;
-			funBase.excluirRegistroResponsavel(responsavel, res);
+			var usuario = req.body;
+			funBase.excluirRegistroResponsavel(usuario, res);
 		});
 
 		app.get('/perfilResponsavel', function(req,res, next){  
@@ -129,13 +129,13 @@ module.exports = {
 		});
 
 		app.delete('/excluirAuxiliar', function(req,res, next){
-			var crmv = req.body;
-			funBase.excluirAuxiliarMedico(crmv, res);
+			var usuario = req.body;
+			funBase.excluirAuxiliarMedico(usuario, res);
 		});
 
 		app.delete('/deletarMedico', function(req,res, next){
-			var crmv = req.body;
-			funBase.excluirMedico(crmv, res);
+			var usuario = req.body;
+			funBase.excluirMedico(usuario, res);
 		});
 
 		app.get('/perfilMedico', function(req,res, next){  
@@ -195,8 +195,8 @@ module.exports = {
 		});
 
 		app.delete('/deletarAuxiliar', function(req,res, next){
-			var cpfAuxiliar = req.body;
-			funBase.excluirAuxiliar(cpfAuxiliar, res);
+			var usuario = req.body;
+			funBase.excluirAuxiliar(usuario, res);
 		});
 
 		app.get('/medicosAuxiliares', function(req,res, next){  

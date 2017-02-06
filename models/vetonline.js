@@ -126,9 +126,9 @@ var connection = require('../connection')
 	};
 	//Exclusões
 	//Excluir Medico
-	function excluirRegistroResponsavel(responsavel, res) {
+	function excluirRegistroResponsavel(usuario, res) {
 	    connection.acquire(function(err, con) {
-	      con.query( "delete from Responsavel, Animal using Responsavel inner join Animal where Responsavel.cpfResponsavel = Animal.cpfResponsavel and Responsavel.cpfResponsavel = ?", [responsavel.username],function(err, result) {
+	      con.query( "delete from Responsavel, Animal using Responsavel inner join Animal where Responsavel.cpfResponsavel = Animal.cpfResponsavel and Responsavel.cpfResponsavel = ?", [usuario.username],function(err, result) {
 	        con.release();
 	        if (err) {
 	          res.send({status: 1, message: 'Failed to delete'});
@@ -205,9 +205,9 @@ var connection = require('../connection')
 	};
 	//Exclusões
 	//Excluir cadastro médico
-	function excluirMedico(crmv, res) {
+	function excluirMedico(usuario, res) {
 	    connection.acquire(function(err, con) {
-	      con.query("delete from Medico, Medico_Auxiliar using Medico inner join Medico_Auxiliar where Medico.crmv = Medico_Auxiliar.CRMVMedico and crmv = "+crmv+"", function(err, result) {
+	      con.query("delete from Medico, Medico_Auxiliar using Medico inner join Medico_Auxiliar where Medico.crmv = Medico_Auxiliar.CRMVMedico and crmv = ?", [usuario.username], function(err, result) {
 	        con.release();
 	        if (err) {
 	          res.send({status: 1, message: 'Failed to delete'});
@@ -218,9 +218,9 @@ var connection = require('../connection')
 	    });
 	};
 	//Excluir vinculo com auxiliar
-	function excluirAuxiliarMedico(crmv, res) {
+	function excluirAuxiliarMedico(usuario, res) {
 	    connection.acquire(function(err, con) {
-	      con.query("delete from Medico_Auxiliar where crmvMedico = "+crmv+"", function(err, result) {
+	      con.query("delete from Medico_Auxiliar where crmvMedico = ?", [usuario.username], function(err, result) {
 	        con.release();
 	        if (err) {
 	          res.send({status: 1, message: 'Failed to delete'});
@@ -319,9 +319,9 @@ var connection = require('../connection')
 	    });
 	};
 	//Excluir Auxiliar
-	function excluirAuxiliar(cpfAuxiliar, res) {
+	function excluirAuxiliar(usuario, res) {
 	    connection.acquire(function(err, con) {
-	      con.query("delete from Auxiliar, Medico_Auxiliar using Auxiliar inner join Medico_Auxiliar where Auxiliar.cpfAuxiliar = Medico_Auxiliar.CPFAuxiliar and Auxiliar.cpfAuxiliar = "+cpfAuxiliar+"", function(err, result) {
+	      con.query("delete from Auxiliar, Medico_Auxiliar using Auxiliar inner join Medico_Auxiliar where Auxiliar.cpfAuxiliar = Medico_Auxiliar.CPFAuxiliar and Auxiliar.cpfAuxiliar = ?", [usuario.username], function(err, result) {
 	        con.release();
 	        if (err) {
 	          res.send({status: 1, message: 'Failed to delete'});
