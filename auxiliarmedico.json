@@ -2,13 +2,13 @@
 	"title": "Auxiliar Medico Schema",
 	"type": "object", 
 	"properties":{
-		"cpfAuxiliar":{
+		"username":{
 			"type":"string"
 		},
-		"crmv":{
+		"cpfAuxiliar":{
 			"type":"string"
 		}
 
 	},
-	"required": ["cpfAuxiliar","crmv"]
+	"required": ["username","cpfAuxiliar"]
 }

@@ -28,6 +28,13 @@ var autenticacaoClinicaSchema = require("./autenticacaoClinica.json");
 module.exports = {	
 	configure: function(app){
 
+		app.all('*', function(req, res, next){
+			res.header("Access-Control-Allow-Origin", "*");
+			res.header("Access-Control-Allow-Methods", "'*'");
+			res.header("Access-Control-Allow-Headers", "'Origin, X-Requested-With, Content-Type, Accept'");
+			next();
+		});
+
 //////////////////////////Tela Responsavel/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////		
 		app.post('/novoResponsavel', function(req, res){
 			var responsavel = req.body;
@@ -93,9 +100,9 @@ module.exports = {
 		});
 
 		app.post('/inserirAuxiliarMedico', function(req, res){
-			var auxiliarmedico = req.body;
-			js.validate(auxiliarmedico, auxiliarmedicoSchema);
-			funBase.inserirAuxiliarMedico(auxiliarmedico, res);
+			var inserirAuxiliar = req.body;
+			js.validate(inserirAuxiliar, auxiliarmedicoSchema);
+			funBase.inserirAuxiliarMedico(inserirAuxiliar, res);
 		});
 
 		app.put('/atualizaMedico', function(req, res){
@@ -117,9 +124,9 @@ module.exports = {
 		});
 
 		app.put('/adicionarAnimal', function(req, res){
-			var adicionarAnimalMedico = req.body;
-			js.validate(adicionarAnimalMedico, adicionarAnimalMedicoSchema);
-			funBase.inserirAnimalMedico(adicionarAnimalMedico, res);
+			var inserirAnimalMedico = req.body;
+			js.validate(inserirAnimalMedico, adicionarAnimalMedicoSchema);
+			funBase.inserirAnimalMedico(inserirAnimalMedico, res);
 		});
 
 		app.put('/inserirAnemia', function(req, res){
@@ -222,6 +229,22 @@ module.exports = {
 		});
 //////////////////////////Consultas Extras//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		
+		app.get('/anemiaMacrocitica', function(req,res){  
+			funBase.anemiaMacrociticaNormocromica(req, res);
+		});
+
+		app.get('/anemiaMacrociticaHipocromica', function(req,res){  
+			funBase.anemiaMacrociticaHipocromica(req, res);
+		});
+
+		app.get('/anemiaMicrocitico', function(req,res){  
+			funBase.anemiaMicrociticoNormocromico(req, res);
+		});
+
+		app.get('/anemiaMicrociticoHipocromico', function(req,res){  
+			funBase.anemiaMicrociticoHipocromico(req, res);
+		});
+
 		app.get('/selecionarEstado', function(req,res){  
 			funBase.listaEstados(req, res);
 		});

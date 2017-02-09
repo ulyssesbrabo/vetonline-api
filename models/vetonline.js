@@ -178,9 +178,9 @@ var connection = require('../connection')
 	    });
 	};
 	//Inserir auxiliar ao médico na tablela auxiliar médico
-	function inserirAuxiliarMedico(auxiliarmedico, res) {
+	function inserirAuxiliarMedico(inserirAuxiliar, res) {
     connection.acquire(function(err, con) {
-      con.query( "insert into Medico_Auxiliar(crmv, cpfAuxiliar) values(?,?)", [auxiliarmedico.crmv, auxiliarmedico.cpfAuxiliar], function(err, result) {
+      con.query( "insert into Medico_Auxiliar(CRMVMedico, CPFAuxiliar) values(?,?)", [inserirAuxiliar.username, inserirAuxiliar.cpfAuxiliar], function(err, result) {
         con.release();
 	        if (err) {
 	          res.send({status: 1, message: 'TODO creation failed'});
@@ -420,9 +420,9 @@ var connection = require('../connection')
 	    });
 	};
 	//Inserir Animal ao medicos apenas o médico
-	function inserirAnimalMedico(adicionarAnimalMedico, res) {
+	function inserirAnimalMedico(inserirAnimalMedico, res) {
 	    connection.acquire(function(err, con) {
-	      con.query("update Animal set Animal.crmvMedico = ? where Animal.cpfResponsavel = ?", [adicionarAnimalMedico.crmv, adicionarAnimalMedico.cpfResponsavel], function(err, result) {
+	      con.query("update Animal set Animal.crmvMedico = ? where Animal.cpfResponsavel = ?", [inserirAnimalMedico.crmv, inserirAnimalMedico.cpfResponsavel], function(err, result) {
 	        con.release();
 	        if (err) {
 	          res.send({status: 1, message: 'TODO update failed'});
@@ -522,7 +522,7 @@ var connection = require('../connection')
 
 	function listaCidadeEstados(estado, res){
 		connection.acquire(function(err,con){
-			con.query("select idCidade, nomeCidade from Estados, Cidade, Estado_Cidade where Estados.idEstados = Estado_Cidade.Estados and Cidade.idCidade = Estado_Cidade.Cidade and Estados.nomeEstados = ?", [estado], function(err, result){
+			con.query("select idCidade, nomeCidade from Estados, Cidade, Estado_Cidade where Estados.idEstados = Estado_Cidade.Estados and Cidade.idCidade = Estado_Cidade.Cidade and Estados.idEstados = ?", [estado], function(err, result){
 				con.release();
 				res.json(result);
 			});
@@ -560,6 +560,42 @@ var connection = require('../connection')
 	function autenticacaoClinica(usuario, res){
 		connection.acquire(function(err, con){
 			con.query("select Clinica.cnpj, Clinica.nomeClinica from Clinica where Clinica.cnpj = ? and Clinica.senhaClinca = ?", [usuario.username, usuario.password], function(err, result){
+				con.release();
+				res.json(result);
+			});
+		});
+	};
+
+	function anemiaMacrociticaNormocromica(res){
+		connection.acquire(function(err, con){
+			con.query("select tipoAnemia, descricaoAnemia from Anemia where idAnemia = 1", function(err, result){
+				con.release();
+				res.json(result);
+			});
+		});
+	};
+
+	function anemiaMacrociticaHipocromica(res){
+		connection.acquire(function(err, con){
+			con.query("select tipoAnemia, descricaoAnemia from Anemia where idAnemia = 2", function(err, result){
+				con.release();
+				res.json(result);
+			});
+		});
+	};
+
+	function anemiaMicrociticoNormocromico(res){
+		connection.acquire(function(err, con){
+			con.query("select tipoAnemia, descricaoAnemia from Anemia where idAnemia = 3", function(err, result){
+				con.release();
+				res.json(result);
+			});
+		});
+	};
+
+	function anemiaMicrociticoHipocromico(res){
+		connection.acquire(function(err, con){
+			con.query("select tipoAnemia, descricaoAnemia from Anemia where idAnemia = 4", function(err, result){
 				con.release();
 				res.json(result);
 			});
@@ -616,7 +652,11 @@ module.exports = {
 	 autenticacaoDoMedico : autenticacaoDoMedico,
 	 autenticacaoDoAuxiliar : autenticacaoDoAuxiliar,
 	 autenticacaoDoResponsavel : autenticacaoDoResponsavel,
-	 autenticacaoClinica : autenticacaoClinica
+	 autenticacaoClinica : autenticacaoClinica,
+	 anemiaMacrociticaNormocromica : anemiaMacrociticaNormocromica,
+	 anemiaMacrociticaHipocromica : anemiaMacrociticaHipocromica,
+	 anemiaMicrociticoNormocromico : anemiaMicrociticoNormocromico,
+	 anemiaMicrociticoHipocromico : anemiaMicrociticoHipocromico
 };
 
 
