@@ -249,13 +249,14 @@ module.exports = {
 			funBase.listaEstados(req, res);
 		});
 
-		app.get('/selecionarCidade/:estado', function(req,res, next){  
-			var estado = req.params.estado;
-			funBase.listaCidadeEstados(estado, res);
+		app.get('/selecionarCidade/:idEstados', function(req,res, next){  
+			var idEstados = req.params.idEstados;
+			funBase.listaCidadeEstados(idEstados, res);
 		});
 
-		app.get('/autenticacaoMedico', function(req,res, next){  
+		app.post('/autenticacaoMedico', function(req,res, next){  
 			var usuario = req.body;
+			console.log(usuario);
 			js.validate(usuario, autenticacaoMedicoSchema);
 			funBase.autenticacaoDoMedico(usuario, res);
 		});

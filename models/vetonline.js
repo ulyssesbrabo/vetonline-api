@@ -1,11 +1,12 @@
 var connection = require('../connection')
+var auth = require('../auth')
 
 ///////////////////////////////////////////////////Classe Clinica//////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//Classe Clinica
 	//Cadastro Clinica 
-	function cadastraClinica(cadastroClin, res) {
+	function cadastraClinica(clinica, res) {
     connection.acquire(function(err, con) {
-      con.query("insert into Clinica(cnpj, nomeClinica, enderecoClinica, telefoneClinicaResidencial, telefoneClincaCelular, telefoneClnicaOutros, emailClinica, senhaClinca, perfilClinica, Estados, Cidade) values(?,?,?,?,?,?,?,?,?,?,?)", [cadastroClin.cnpj, cadastroClin.nomeClinica, cadastroClin.enderecoClinica, cadastroClin.telefoneClinicaResidencial, cadastroClin.telefoneClincaCelular, cadastroClin.telefoneClnicaOutros, cadastroClin.emailClinica, cadastroClin.senhaClinca, cadastroClin.perfilClinica, cadastroClin.Estados, cadastroClin.Cidade], function(err, result) {
+      con.query("insert into Clinica(cnpj, nomeClinica, enderecoClinica, telefoneClinicaResidencial, telefoneClincaCelular, telefoneClnicaOutros, emailClinica, senhaClinca, perfilClinica, Estados, Cidade) values(?,?,?,?,?,?,?,?,?,?,?)", [clinica.cnpj, clinica.nomeClinica, clinica.enderecoClinica, clinica.telefoneClinicaResidencial, clinica.telefoneClincaCelular, clinica.telefoneClnicaOutros, clinica.emailClinica, clinica.senhaClinca, clinica.perfilClinica, clinica.Estados, clinica.Cidade], function(err, result) {
         con.release();
 	        if (err) {
 	          res.send({status: 1, message: 'TODO creation failed'});
@@ -153,7 +154,7 @@ var connection = require('../connection')
 	//Cadastro Médico
 	function cadastraMedico(medico, res) {
        connection.acquire(function(err, con) {
-	      con.query( "insert into Medico(crmv, nomeMedico, telefoneMedico, emailMedico, senhaMedico, perfilMedico, Estados, Cidade) values(?,?,?,?,?,?,?,?)", [medico.crmv, medico.nomeMedico, medico.telefoneMedico, medico.emailMedico, medico.senhaMedico, medico.perfilMedico, medico.Estados, medico.Cidade], function(err, result) {
+	      con.query( "insert into Medico(crmv, nomeMedico, Estados, Cidade, perfilMedico, emailMedico, telefoneMedico, senhaMedico) values(?,?,?,?,?,?,?,?)", [medico.crmv, medico.nomeMedico, medico.Estados, medico.Cidade, medico.perfilMedico, medico.emailMedico, medico.telefoneMedico, medico.senhaMedico], function(err, result) {
 	        con.release();
 	        if (err) {
 	          res.send({status: 1, message: 'TODO creation failed'});
@@ -520,22 +521,38 @@ var connection = require('../connection')
 		});
 	};
 
-	function listaCidadeEstados(estado, res){
+	function listaCidadeEstados(idEstados, res){
 		connection.acquire(function(err,con){
-			con.query("select idCidade, nomeCidade from Estados, Cidade, Estado_Cidade where Estados.idEstados = Estado_Cidade.Estados and Cidade.idCidade = Estado_Cidade.Cidade and Estados.idEstados = ?", [estado], function(err, result){
+			con.query("select idCidade, nomeCidade from Estados, Cidade, Estado_Cidade where Estados.idEstados = Estado_Cidade.Estados and Cidade.idCidade = Estado_Cidade.Cidade and Estados.idEstados = ?", [idEstados], function(err, result){
+				con.release();
+				res.json(result);
+			});
+		});
+	};
+///////////////////////////////////////////////////Autenticação//////////////////////////////////////////////////////////////////////////////////////////////////	
+	
+	function getUsuario (idusuario, res){
+		connection.acquire(function(err,con){
+			con.query("select*from usuario where idusuario = ?", [idusuario], function(err, result){
 				con.release();
 				res.json(result);
 			});
 		});
 	};
 
-///////////////////////////////////////////////////Autenticação//////////////////////////////////////////////////////////////////////////////////////////////////	
-
 	function autenticacaoDoMedico(usuario, res){
 		connection.acquire(function(err, con){
 			con.query("select Medico.crmv, Medico.nomeMedico from Medico where Medico.crmv = ? and Medico.senhaMedico = ?", [usuario.username, usuario.password], function(err, result){
 				con.release();
-				res.json(result);
+				if (result.length == 0) {
+					return res.json("erro autenticação")
+				}
+				var token = auth.sign(result.usuario, 1)
+				
+				res.json({
+					user: result,
+					token:token
+				});
 			});
 		});
 	};
@@ -544,6 +561,7 @@ var connection = require('../connection')
 		connection.acquire(function(err, con){
 			con.query("select Auxiliar.cpfAuxiliar, Auxiliar.nomeAuxiliar from Auxiliar where Auxiliar.cpfAuxiliar = ? and Auxiliar.senhaAuxiliar = ?", [usuario.username, usuario.password], function(err, result){
 				con.release();
+				result.token = auth.sign(result.usuario, 2)
 				res.json(result);
 			});
 		});
@@ -553,6 +571,7 @@ var connection = require('../connection')
 		connection.acquire(function(err, con){
 			con.query("select Responsavel.cpfResponsavel, Responsavel.nomeResponsavel from Responsavel where cpfResponsavel = ? and senhaResponsavel = ?", [usuario.username, usuario.password], function(err, result){
 				con.release();
+				result.token = auth.sign(result.usuario, 3)
 				res.json(result);
 			});
 		});
@@ -561,6 +580,7 @@ var connection = require('../connection')
 		connection.acquire(function(err, con){
 			con.query("select Clinica.cnpj, Clinica.nomeClinica from Clinica where Clinica.cnpj = ? and Clinica.senhaClinca = ?", [usuario.username, usuario.password], function(err, result){
 				con.release();
+				result.token = auth.sign(result.usuario, 4)
 				res.json(result);
 			});
 		});

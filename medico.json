@@ -8,25 +8,25 @@
 		"nomeMedico":{
 			"type":"string"
 		},
-		"perfilMedico":{
-			"type":"string"
-		},
-		"telefoneMedico":{
-			"type":"string"
-		},
-		"emailMedico":{
-			"type":"string"
-		},
 		"Estado":{
 			"type":"integer"
 		},
 		"Cidade":{
 			"type":"integer"
 		},
+		"perfilMedico":{
+			"type":"string"
+		},
+		"emailMedico":{
+			"type":"string"
+		},
+		"telefoneMedico":{
+			"type":"string"
+		},
 		"senhaMedico":{
 			"type":"string"
 		}
 
 	},
-	"required": ["crmv","nomeMedico","perfilMedico","telefoneMedico","emailMedico","Estado","Cidade","senhaMedico"]
+	"required": ["crmv","nomeMedico","Estado","Cidade","perfilMedico","emailMedico","telefoneMedico","senhaMedico"]
 }
