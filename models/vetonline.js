@@ -540,17 +540,16 @@ var auth = require('../auth')
 		});
 	};
 
-	function autenticacaoDoMedico(usuario, res){
+	function autenticacaoDoMedico(usuario, res, rows){
 		connection.acquire(function(err, con){
-			con.query("select Medico.crmv, Medico.nomeMedico from Medico where Medico.crmv = ? and Medico.senhaMedico = ?", [usuario.username, usuario.password], function(err, result){
+			con.query("select Medico.crmv, Medico.nomeMedico from Medico where Medico.crmv = ? and Medico.senhaMedico = ?", [usuario.username, usuario.password], function(err, result, rows){
 				con.release();
 				if (result.length == 0) {
 					return res.json("erro autenticação")
 				}
 				var token = auth.sign(result.usuario, 1)
-				
 				res.json({
-					user: result,
+					user:result[0],
 					token:token
 				});
 			});
