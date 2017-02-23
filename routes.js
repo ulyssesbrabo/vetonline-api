@@ -23,11 +23,11 @@ var autenticacaoMedicoSchema = require("./autenticacaoMedico.json");
 var autenticacaoAuxiliarSchema = require("./autenticacaoAuxiliar.json");
 var autenticacaoResponsavelSchema = require("./autenticacaoResponsavel.json");
 var autenticacaoClinicaSchema = require("./autenticacaoClinica.json");
+var auth = require("./auth.js");
 
 
 module.exports = {	
 	configure: function(app){
-
 		app.all('*', function(req, res, next){
 			res.header("Access-Control-Allow-Origin", "*");
 			res.header("Access-Control-Allow-Methods", "'*'");
@@ -245,7 +245,8 @@ module.exports = {
 			funBase.anemiaMicrociticoHipocromico(req, res);
 		});
 
-		app.get('/selecionarEstado', function(req,res){  
+		app.get('/selecionarEstado', auth.validate(), function(req,res){
+			console.log("Oi");
 			funBase.listaEstados(req, res);
 		});
 

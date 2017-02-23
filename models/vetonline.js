@@ -1,3 +1,4 @@
+var Promise = require("bluebird");
 var connection = require('../connection')
 var auth = require('../auth')
 
@@ -531,11 +532,17 @@ var auth = require('../auth')
 	};
 ///////////////////////////////////////////////////Autenticação//////////////////////////////////////////////////////////////////////////////////////////////////	
 	
-	function getUsuario (idusuario, res){
-		connection.acquire(function(err,con){
-			con.query("select*from usuario where idusuario = ?", [idusuario], function(err, result){
-				con.release();
-				res.json(result);
+	function getusuario(idusuario){
+		return new Promise(function(resolve, reject){
+			connection.acquire(function(err,con){
+				con.query("select*from usuario where idusuario = ?", [idusuario], function(err, result){
+					console.log("Chegou aqui");
+					con.release();
+					if(err){
+						reject(err);
+					}
+					resolve(result);
+				});
 			});
 		});
 	};
@@ -675,7 +682,8 @@ module.exports = {
 	 anemiaMacrociticaNormocromica : anemiaMacrociticaNormocromica,
 	 anemiaMacrociticaHipocromica : anemiaMacrociticaHipocromica,
 	 anemiaMicrociticoNormocromico : anemiaMicrociticoNormocromico,
-	 anemiaMicrociticoHipocromico : anemiaMicrociticoHipocromico
+	 anemiaMicrociticoHipocromico : anemiaMicrociticoHipocromico,
+	 getusuario : getusuario
 };
 
 
