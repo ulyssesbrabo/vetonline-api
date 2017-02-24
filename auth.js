@@ -17,18 +17,14 @@ passport.use(new JwtStrategy(options, function(jwt_payload, done){
     console.log(repositorio);
     repositorio.getusuario(jwt_payload.sub)
         .then(function(usuario){
-            console.log("Chegou aqui 9");
 			if(!usuario){
                 return done(new Error("Usuario Inválido"), false);
-                console.log("Chegou aqui 4");
             }
             AUTH_USER = usuario;
             done(null, usuario);
-            console.log("Chegou aqui 5");
         })
         .catch(function(err){
             done(err, false)
-            console.log("Chegou aqui 3");
         });
 }));
 
@@ -39,11 +35,9 @@ function sign(idusuario, tipo) {
     };
         console.log("Chegou aqui 6");
     return jwt.sign(payload, secret);
-    console.log("Chegou aqui 7");
 }
 
 function validate(req,res, next) {
-    console.log("Chegou aqui 8");
     return passport.authenticate('jwt', {session:false});
 }
 

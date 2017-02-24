@@ -42,31 +42,31 @@ module.exports = {
 			funBase.cadastraResponsavel(responsavel, res);
 		});
 
-		app.post('/criarAnimalResponsavel', function(req, res){
+		app.post('/criarAnimalResponsavel', auth.validate(), function(req, res){
 			var animalRes = req.body;
 			js.validate(animalRes, animalResSchema);
 			funBase.cadastroAnimalUsuario(animalRes, res);
 		});
 
-		app.put('/RespUpdDados', function(req, res){
+		app.put('/RespUpdDados', auth.validate(), function(req, res){
 			var responsavelUpdateDados = req.body;
 			js.validate(responsavelUpdateDados, respUpdDadosSchema);
 			funBase.atualizarDadosResponsavel(responsavelUpdateDados, res);
 		});
 
-		app.put('/RespUpdContatos', function(req, res){
+		app.put('/RespUpdContatos', auth.validate(), function(req, res){
 			var responsavelUpdateContatos = req.body;
 			js.validate(responsavelUpdateContatos, respUpdContatosSchema);
 			funBase.atualizarContatosResponsavel(responsavelUpdateContatos, res);
 		});
 
-		app.put('/RespUpdSenha', function(req, res){
+		app.put('/RespUpdSenha', auth.validate(), function(req, res){
 			var responsavelUpdateSenha = req.body;
 			js.validate(responsavelUpdateSenha, respUpdSenhaSchema);
 			funBase.atualizarSenhaResponsavel(responsavelUpdateSenha, res);
 		});
 
-		app.delete('/excluirResponsavel', function(req,res, next){
+		app.delete('/excluirResponsavel', auth.validate(), function(req,res, next){
 			var usuario = req.body;
 			funBase.excluirRegistroResponsavel(usuario, res);
 		});
@@ -93,54 +93,54 @@ module.exports = {
 			funBase.cadastraMedico(medico, res);
 		});
 
-		app.post('/criarAnimalMedico', function(req, res){
+		app.post('/criarAnimalMedico', auth.validate(), function(req, res){
 			var animalMed = req.body;
 			js.validate(animalMed, animalMedSchema);
 			funBase.cadastraAnimalMedico(animalMed, res);
 		});
 
-		app.post('/inserirAuxiliarMedico', function(req, res){
+		app.post('/inserirAuxiliarMedico', auth.validate(), function(req, res){
 			var inserirAuxiliar = req.body;
 			js.validate(inserirAuxiliar, auxiliarmedicoSchema);
 			funBase.inserirAuxiliarMedico(inserirAuxiliar, res);
 		});
 
-		app.put('/atualizaMedico', function(req, res){
+		app.put('/atualizaMedico', auth.validate(), function(req, res){
 			var atualizaMedico = req.body;
 			js.validate(atualizaMedico, atualMedicoSchema);
 			funBase.atualizarMedico(atualizaMedico, res);
 		});
 
-		app.put('/atualizaSenhaMedico', function(req, res){
+		app.put('/atualizaSenhaMedico', auth.validate(), function(req, res){
 			var atualizaSenhaMedico = req.body;
 			js.validate(atualizaSenhaMedico, atualSenhaMedicoSchema);
 			funBase.atualizarSenhaMedico(atualizaSenhaMedico, res);
 		});
 
-		app.put('/historicoAnimal', function(req, res){
+		app.put('/historicoAnimal', auth.validate(), function(req, res){
 			var historicoAnimal = req.body;
 			js.validate(historicoAnimal, historicoAnimalSchema);
 			funBase.inserirHistoricoAnimal(historicoAnimal, res);
 		});
 
-		app.put('/adicionarAnimal', function(req, res){
+		app.put('/adicionarAnimal', auth.validate(), function(req, res){
 			var inserirAnimalMedico = req.body;
 			js.validate(inserirAnimalMedico, adicionarAnimalMedicoSchema);
 			funBase.inserirAnimalMedico(inserirAnimalMedico, res);
 		});
 
-		app.put('/inserirAnemia', function(req, res){
+		app.put('/inserirAnemia', auth.validate(), function(req, res){
 			var inserirAnemia = req.body;
 			js.validate(inserirAnemia, inserirAnemiaSchema);
 			funBase.inserirAnemia(inserirAnemia, res);
 		});
 
-		app.delete('/excluirAuxiliar', function(req,res, next){
+		app.delete('/excluirAuxiliar', auth.validate(), function(req,res, next){
 			var usuario = req.body;
 			funBase.excluirAuxiliarMedico(usuario, res);
 		});
 
-		app.delete('/deletarMedico', function(req,res, next){
+		app.delete('/deletarMedico', auth.validate(), function(req,res, next){
 			var usuario = req.body;
 			funBase.excluirMedico(usuario, res);
 		});
@@ -177,31 +177,31 @@ module.exports = {
 			funBase.cadastraAuxiliar(auxiliar, res);
 		});
 
-		app.post('/inserirAnimalAuxiliar', function(req, res){
+		app.post('/inserirAnimalAuxiliar', auth.validate(), function(req, res){
 			var cadastroAniAux = req.body;
 			js.validate(cadastroAniAux, cadastroAniAuxSchema);
 			funBase.cadastraAuxiliar(cadastroAniAux, res);
 		});
 
-		app.put('/atualizaAuxiliar', function(req, res){
+		app.put('/atualizaAuxiliar', auth.validate(), function(req, res){
 			var atualizaAuxiliar = req.body;
 			js.validate(atualizaAuxiliar, atualizarAuxiliarSchema);
 			funBase.atualizarAuxiliar(atualizaAuxiliar, res);
 		});
 
-		app.put('/atualizaSenhaAuxiliar', function(req, res){
+		app.put('/atualizaSenhaAuxiliar', auth.validate(), function(req, res){
 			var atualizaSenhaAuxiliar = req.body;
 			js.validate(atualizaSenhaAuxiliar, atualizaSenhaAuxiliarSchema);
 			funBase.atualizarSenhaAuxiliar(atualizaSenhaAuxiliar, res);
 		});
 
-		app.put('/inserirAnimalAuxiliar', function(req, res){
+		app.put('/inserirAnimalAuxiliar', auth.validate(), function(req, res){
 			var inserirAnimalAuxiliar = req.body;
 			js.validate(inserirAnimalAuxiliar, inserirAnimalAuxiliarSchema);
 			funBase.inserirAnimalAuxiliar(inserirAnimalAuxiliar, res);
 		});
 
-		app.delete('/deletarAuxiliar', function(req,res, next){
+		app.delete('/deletarAuxiliar', auth.validate(), function(req,res, next){
 			var usuario = req.body;
 			funBase.excluirAuxiliar(usuario, res);
 		});
@@ -245,7 +245,7 @@ module.exports = {
 			funBase.anemiaMicrociticoHipocromico(req, res);
 		});
 
-		app.get('/selecionarEstado', auth.validate(), function(req,res){
+		app.get('/selecionarEstado', function(req,res){
 			console.log("Oi");
 			funBase.listaEstados(req, res);
 		});
