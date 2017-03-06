@@ -31,7 +31,7 @@ module.exports = {
 		app.all('*', function(req, res, next){
 			res.header("Access-Control-Allow-Origin", "*");
 			res.header("Access-Control-Allow-Methods", "'*'");
-			res.header("Access-Control-Allow-Headers", "'Origin, X-Requested-With, Content-Type, Accept'");
+			res.header("Access-Control-Allow-Headers", "'Origin, X-Requested-With, Content-Type, Accept, Authorization'");
 			next();
 		});
 
@@ -254,7 +254,7 @@ module.exports = {
 			var idEstados = req.params.idEstados;
 			funBase.listaCidadeEstados(idEstados, res);
 		});
-
+//////////////////////////Autenticação///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		app.post('/autenticacaoMedico', function(req,res, next){  
 			var usuario = req.body;
 			console.log(usuario);
