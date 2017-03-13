@@ -552,6 +552,7 @@ var auth = require('../auth')
 			con.query("select Medico.crmv, Medico.nomeMedico from Medico where Medico.crmv = ? and Medico.senhaMedico = ?", [usuario.username, usuario.password], function(err, result, rows){
 				con.release();
 				if (result.length == 0) {
+					res.status(403);
 					return res.json("erro autenticação")
 				}
 				var token = auth.sign(result.usuario, 1)
@@ -567,8 +568,15 @@ var auth = require('../auth')
 		connection.acquire(function(err, con){
 			con.query("select Auxiliar.cpfAuxiliar, Auxiliar.nomeAuxiliar from Auxiliar where Auxiliar.cpfAuxiliar = ? and Auxiliar.senhaAuxiliar = ?", [usuario.username, usuario.password], function(err, result){
 				con.release();
-				result.token = auth.sign(result.usuario, 2)
-				res.json(result);
+				if (result.length == 0) {
+					res.status(403);
+					return res.json("erro autenticação")
+				}
+				var token = auth.sign(result.usuario, 2)
+				res.json({
+					user:result[0],
+					token:token
+				});
 			});
 		});
 	};
@@ -577,8 +585,15 @@ var auth = require('../auth')
 		connection.acquire(function(err, con){
 			con.query("select Responsavel.cpfResponsavel, Responsavel.nomeResponsavel from Responsavel where cpfResponsavel = ? and senhaResponsavel = ?", [usuario.username, usuario.password], function(err, result){
 				con.release();
-				result.token = auth.sign(result.usuario, 3)
-				res.json(result);
+				if (result.length == 0) {
+					res.status(403);
+					return res.json("erro autenticação")
+				}
+				var token = auth.sign(result.usuario, 1)
+				res.json({
+					user:result[0],
+					token:token
+				});
 			});
 		});
 	};
@@ -586,8 +601,15 @@ var auth = require('../auth')
 		connection.acquire(function(err, con){
 			con.query("select Clinica.cnpj, Clinica.nomeClinica from Clinica where Clinica.cnpj = ? and Clinica.senhaClinca = ?", [usuario.username, usuario.password], function(err, result){
 				con.release();
-				result.token = auth.sign(result.usuario, 4)
-				res.json(result);
+				if (result.length == 0) {
+					res.status(403);
+					return res.json("erro autenticação")
+				}
+				var token = auth.sign(result.usuario, 4)
+				res.json({
+					user:result[0],
+					token:token
+				});
 			});
 		});
 	};

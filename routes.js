@@ -262,19 +262,19 @@ module.exports = {
 			funBase.autenticacaoDoMedico(usuario, res);
 		});
 
-		app.get('/autenticacaoAuxiliar', function(req,res, next){  
+		app.post('/autenticacaoAuxiliar', function(req,res, next){  
 			var usuario = req.body;
 			js.validate(usuario, autenticacaoAuxiliarSchema);
 			funBase.autenticacaoDoAuxiliar(usuario, res);
 		});
 
-		app.get('/autenticacaoResponsavel', function(req,res, next){  
+		app.post('/autenticacaoResponsavel', function(req,res, next){  
 			var usuario = req.body;
 			js.validate(usuario, autenticacaoResponsavelSchema);
 			funBase.autenticacaoDoResponsavel(usuario, res);
 		});
 
-		app.get('/autenticacaoClinica', function(req,res, next){  
+		app.post('/autenticacaoClinica', function(req,res, next){  
 			var usuario = req.body;
 			js.validate(usuario, autenticacaoClinicaSchema);
 			funBase.autenticacaoClinica(usuario, res);
