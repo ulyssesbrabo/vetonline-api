@@ -182,7 +182,7 @@ var auth = require('../auth')
 	//Inserir auxiliar ao médico na tablela auxiliar médico
 	function inserirAuxiliarMedico(inserirAuxiliar, res) {
     connection.acquire(function(err, con) {
-      con.query( "insert into Medico_Auxiliar(CRMVMedico, CPFAuxiliar) values(?,?)", [inserirAuxiliar.username, inserirAuxiliar.cpfAuxiliar], function(err, result) {
+      con.query( "insert into Medico_Auxiliar(Medico, Auxiliar) values(?,?)", [inserirAuxiliar.username, inserirAuxiliar.cpfAuxiliar], function(err, result) {
         con.release();
 	        if (err) {
 	          res.send({status: 1, message: 'TODO creation failed'});
@@ -283,7 +283,7 @@ var auth = require('../auth')
 	//Cadastra Auxiliar
 	function cadastraAuxiliar(auxiliar, res) {
     connection.acquire(function(err, con) {
-      con.query("insert into Auxiliar(cpfAuxiliar, nomeAuxiliar, telefoneAuxiliar, emailAuxiliar, senhaAuxiliar, enderecoAuxiliar, Estados, Cidade) values(?,?,?,?,?,?,?,?)", [auxiliar.cpfAuxiliar,auxiliar.nomeAuxiliar,auxiliar.telefoneAuxiliar,auxiliar.emailAuxiliar,auxiliar.senhaAuxiliar,auxiliar.enderecoAuxiliar, auxiliar.Estados, auxiliar.Cidade], function(err, result) {
+      con.query("insert into Auxiliar(cpfAuxiliar, nomeAuxiliar, telefoneAuxiliar, emailAuxiliar, senhaAuxiliar, enderecoAuxiliar, Estado, Cidade) values(?,?,?,?,?,?,?,?)", [auxiliar.cpfAuxiliar,auxiliar.nomeAuxiliar,auxiliar.telefoneAuxiliar,auxiliar.emailAuxiliar,auxiliar.senhaAuxiliar,auxiliar.enderecoAuxiliar, auxiliar.Estados, auxiliar.Cidade], function(err, result) {
         con.release();
 	        if (err) {
 	          res.send({status: 1, message: 'TODO creation failed'});
@@ -339,9 +339,10 @@ var auth = require('../auth')
 		console.log("função Auxiliar Medicos");
 		console.log(usuario);
 		connection.acquire(function(err, con){
-			con.query('select Auxiliar.cpfAuxiliar, nomeAuxiliar, emailAuxiliar, telefoneAuxiliar from Auxiliar, Medico, Medico_Auxiliar where Medico_Auxiliar.CRMVMedico = Medico.crmv and Auxiliar.cpfAuxiliar = Medico_Auxiliar.CPFAuxiliar and Medico.crmv=?', [usuario], function(err, result){
+			con.query("select Auxiliar.cpfAuxiliar, nomeAuxiliar, emailAuxiliar, telefoneAuxiliar from Auxiliar, Medico, Medico_Auxiliar where Medico_Auxiliar.Medico = Medico.idusuario and Auxiliar.idusuario = Medico_Auxiliar.Auxiliar and Medico.idusuario=?", [usuario.idusuario], function(err, result){
 				con.release();
-				res.json(result[0]);
+				res.json(result);
+				console.log(result);
 			});
 		});
 	};
@@ -534,12 +535,12 @@ var auth = require('../auth')
 	};
 ///////////////////////////////////////////////////Autenticação//////////////////////////////////////////////////////////////////////////////////////////////////	
 	
-	function getusuario(usuario){
+	function getusuario(tipo){
 		return new Promise(function(resolve, reject){
 			connection.acquire(function(err,con){
-				con.query("select*from usuario where idusuario = ?", [usuario.idusuario], function(err, result){
+				con.query("select usuario.idusuario from usuario where idusuario = ?", [tipo], function(err, result){
 					console.log("função getusuario");
-					console.log(usuario.idusuario);
+					console.log(tipo);
 					con.release();
 					if(err){
 						reject(err);

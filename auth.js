@@ -14,14 +14,14 @@ var options = {
 
 passport.use(new JwtStrategy(options, function(jwt_payload, done){
     var repositorio = require('./models/vetonline.js');
-    repositorio.getusuario(jwt_payload.sub)
+    repositorio.getusuario(jwt_payload.type)
         .then(function(usuario){
 			if(!usuario){
                 return done(new Error("Usuario Inválido"), false);
             }
-            AUTH_USER = usuario[0];
+            AUTH_USER = jwt_payload.sub;
             console.log("Valor usuario");
-            console.log(AUTH_USER.idusuario);
+            console.log(AUTH_USER);
             done(null, usuario[0]);
         })
         .catch(function(err){
@@ -35,7 +35,7 @@ function sign(usuario, tipo) {
         sub: usuario,
         type: tipo
     };
-    console.log(usuario);
+    console.log(tipo);
 
     return jwt.sign(payload, secret);
 }
