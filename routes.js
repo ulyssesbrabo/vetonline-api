@@ -150,8 +150,10 @@ module.exports = {
 			funBase.perfilMedico(usuario, res);
 		});
 
-		app.get('/auxiliaresMedicos', function(req,res, next){  
-			var usuario = req.body;
+		app.get('/auxiliaresMedicos', auth.validate(), function(req,res, next){  
+			var usuario = auth.validacaoUsuario();
+			console.log("variavel usuario");
+			console.log(usuario);
 			funBase.listarAuxiliaresDoMedicos(usuario, res);
 		});
 
@@ -257,7 +259,6 @@ module.exports = {
 //////////////////////////Autenticação///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		app.post('/autenticacaoMedico', function(req,res, next){  
 			var usuario = req.body;
-			console.log(usuario);
 			js.validate(usuario, autenticacaoMedicoSchema);
 			funBase.autenticacaoDoMedico(usuario, res);
 		});

@@ -14,27 +14,34 @@ var options = {
 
 passport.use(new JwtStrategy(options, function(jwt_payload, done){
     var repositorio = require('./models/vetonline.js');
-    console.log(repositorio);
     repositorio.getusuario(jwt_payload.sub)
         .then(function(usuario){
 			if(!usuario){
                 return done(new Error("Usuario Inválido"), false);
             }
-            AUTH_USER = usuario;
-            done(null, usuario);
+            AUTH_USER = usuario[0];
+            console.log("Valor usuario");
+            console.log(AUTH_USER.idusuario);
+            done(null, usuario[0]);
         })
         .catch(function(err){
             done(err, false)
         });
 }));
 
-function sign(idusuario, tipo) {
+function sign(usuario, tipo) {
+    console.log("função sign auth");
     var payload = {
-        sub: idusuario,
+        sub: usuario,
         type: tipo
     };
-        console.log("Chegou aqui 6");
+    console.log(usuario);
+
     return jwt.sign(payload, secret);
+}
+
+function validacaoUsuario(){
+    return AUTH_USER;
 }
 
 function validate(req,res, next) {
@@ -43,6 +50,7 @@ function validate(req,res, next) {
 
 module.exports = {
 	validate:validate,
+    validacaoUsuario:validacaoUsuario,
 	sign: sign,
-	authUser: AUTH_USER
+	AUTH_USER: AUTH_USER
 };

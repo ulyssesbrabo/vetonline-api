@@ -155,7 +155,7 @@ var auth = require('../auth')
 	//Cadastro Médico
 	function cadastraMedico(medico, res) {
        connection.acquire(function(err, con) {
-	      con.query( "insert into Medico(crmv, nomeMedico, Estados, Cidade, perfilMedico, emailMedico, telefoneMedico, senhaMedico) values(?,?,?,?,?,?,?,?)", [medico.crmv, medico.nomeMedico, medico.Estados, medico.Cidade, medico.perfilMedico, medico.emailMedico, medico.telefoneMedico, medico.senhaMedico], function(err, result) {
+	      con.query( "insert into Medico(crmv, nomeMedico, Estado, Cidade, perfilMedico, emailMedico, telefoneMedico, senhaMedico) values(?,?,?,?,?,?,?,?)", [medico.crmv, medico.nomeMedico, medico.Estados, medico.Cidade, medico.perfilMedico, medico.emailMedico, medico.telefoneMedico, medico.senhaMedico], function(err, result) {
 	        con.release();
 	        if (err) {
 	          res.send({status: 1, message: 'TODO creation failed'});
@@ -336,10 +336,12 @@ var auth = require('../auth')
 	//Consultas
 	//tela medicos: auxiliares dos medicos
 	function listarAuxiliaresDoMedicos(usuario, res){
+		console.log("função Auxiliar Medicos");
+		console.log(usuario);
 		connection.acquire(function(err, con){
-			con.query('select Auxiliar.cpfAuxiliar, nomeAuxiliar, emailAuxiliar, telefoneAuxiliar from Auxiliar, Medico, Medico_Auxiliar where Medico_Auxiliar.CRMVMedico = Medico.crmv and Auxiliar.cpfAuxiliar = Medico_Auxiliar.CPFAuxiliar and Medico.crmv=?', [usuario.username], function(err, result){
+			con.query('select Auxiliar.cpfAuxiliar, nomeAuxiliar, emailAuxiliar, telefoneAuxiliar from Auxiliar, Medico, Medico_Auxiliar where Medico_Auxiliar.CRMVMedico = Medico.crmv and Auxiliar.cpfAuxiliar = Medico_Auxiliar.CPFAuxiliar and Medico.crmv=?', [usuario], function(err, result){
 				con.release();
-				res.json(result);
+				res.json(result[0]);
 			});
 		});
 	};
@@ -524,7 +526,7 @@ var auth = require('../auth')
 
 	function listaCidadeEstados(idEstados, res){
 		connection.acquire(function(err,con){
-			con.query("select idCidade, nomeCidade from Estados, Cidade, Estado_Cidade where Estados.idEstados = Estado_Cidade.Estados and Cidade.idCidade = Estado_Cidade.Cidade and Estados.idEstados = ?", [idEstados], function(err, result){
+			con.query("select idCidade, nomeCidade from Estados, Cidade, EstadosCidade where Estados.idEstados = EstadosCidade.Estados and Cidade.idCidade = EstadosCidade.Cidade and Estados.idEstados = ?", [idEstados], function(err, result){
 				con.release();
 				res.json(result);
 			});
@@ -532,16 +534,19 @@ var auth = require('../auth')
 	};
 ///////////////////////////////////////////////////Autenticação//////////////////////////////////////////////////////////////////////////////////////////////////	
 	
-	function getusuario(idusuario){
+	function getusuario(usuario){
 		return new Promise(function(resolve, reject){
 			connection.acquire(function(err,con){
-				con.query("select*from usuario where idusuario = ?", [idusuario], function(err, result){
-					console.log("Chegou aqui");
+				con.query("select*from usuario where idusuario = ?", [usuario.idusuario], function(err, result){
+					console.log("função getusuario");
+					console.log(usuario.idusuario);
 					con.release();
 					if(err){
 						reject(err);
 					}
 					resolve(result);
+					console.log("função getusuario resposta");
+					console.log(result);
 				});
 			});
 		});
@@ -549,13 +554,17 @@ var auth = require('../auth')
 
 	function autenticacaoDoMedico(usuario, res, rows){
 		connection.acquire(function(err, con){
-			con.query("select Medico.crmv, Medico.nomeMedico from Medico where Medico.crmv = ? and Medico.senhaMedico = ?", [usuario.username, usuario.password], function(err, result, rows){
+			con.query("select Medico.crmv, Medico.idusuario from Medico where Medico.crmv = ? and Medico.senhaMedico = ?", [usuario.username, usuario.password], function(err, result, rows){
 				con.release();
 				if (result.length == 0) {
 					res.status(403);
 					return res.json("erro autenticação")
 				}
-				var token = auth.sign(result.usuario, 1)
+				var token = auth.sign(result[0], 1)
+				console.log("autenticação medico usuario login");
+				console.log(usuario.username);
+				console.log("autenticação medico");
+				console.log(result[0]);
 				res.json({
 					user:result[0],
 					token:token
