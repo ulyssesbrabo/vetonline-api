@@ -4,11 +4,8 @@
 	"properties":{
 		"senhaMedico":{
 			"type":"string"
-		},
-		"crmv":{
-			"type":"string"
 		}
 
 	},
-	"required": ["senhaMedico","crmv"]
+	"required": ["senhaMedico"]
 }

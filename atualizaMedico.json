@@ -2,9 +2,6 @@
 	"title": "AtualizaMedico Schema",
 	"type": "object", 
 	"properties":{
-		"nomeMedico":{
-			"type":"string"
-		},
 		"emailMedico":{
 			"type":"string"
 		},
@@ -14,10 +11,10 @@
 		"perfilMedico":{
 			"type":"string"
 		},
-		"crmv":{
-			"type":"string"
+		"idusuario":{
+			"type":"integer"
 		}
 
 	},
-	"required": ["nomeMedico","emailMedico","telefoneMedico","perfilMedico","crmv"]
+	"required": ["emailMedico","telefoneMedico","perfilMedico","idusuario"]
 }

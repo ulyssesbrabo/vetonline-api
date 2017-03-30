@@ -128,27 +128,39 @@ module.exports = {
 		});
 
 		app.post('/inserirAuxiliarMedico', auth.validate(), function(req, res){
-			var inserirAuxiliar = req.body;
-			js.validate(inserirAuxiliar, auxiliarmedicoSchema);
-			funBase.inserirAuxiliarMedico(inserirAuxiliar, res);
+			var usuario = auth.validacaoUsuario();
+			console.log("variavel usuario");
+			console.log(usuario);
+			var auxiliar = req.body;
+			js.validate(auxiliar, auxiliarmedicoSchema);
+			funBase.inserirAuxiliarMedico(auxiliar, usuario, res);
 		});
 
 		app.put('/atualizaMedico', auth.validate(), function(req, res){
-			var atualizaMedico = req.body;
-			js.validate(atualizaMedico, atualMedicoSchema);
-			funBase.atualizarMedico(atualizaMedico, res);
+			var usuario = auth.validacaoUsuario();
+			console.log("variavel usuario");
+			console.log(usuario);
+			var medico = req.body;
+			js.validate(medico, atualMedicoSchema);
+			funBase.atualizarMedico(medico, usuario, res);
 		});
 
 		app.put('/atualizaSenhaMedico', auth.validate(), function(req, res){
-			var atualizaSenhaMedico = req.body;
-			js.validate(atualizaSenhaMedico, atualSenhaMedicoSchema);
-			funBase.atualizarSenhaMedico(atualizaSenhaMedico, res);
+			var usuario = auth.validacaoUsuario();
+			console.log("variavel usuario");
+			console.log(usuario);
+			var medico = req.body;
+			js.validate(medico, atualSenhaMedicoSchema);
+			funBase.atualizarSenhaMedico(medico, usuario, res);
 		});
 
 		app.put('/historicoAnimal', auth.validate(), function(req, res){
-			var historicoAnimal = req.body;
-			js.validate(historicoAnimal, historicoAnimalSchema);
-			funBase.inserirHistoricoAnimal(historicoAnimal, res);
+			var usuario = auth.validacaoUsuario();
+			console.log("variavel usuario");
+			console.log(usuario);
+			var animal = req.body;
+			js.validate(animal, historicoAnimalSchema);
+			funBase.inserirHistoricoAnimal(animal, usuario, res);
 		});
 
 		app.put('/adicionarAnimal', auth.validate(), function(req, res){
@@ -161,18 +173,25 @@ module.exports = {
 		});
 
 		app.put('/inserirAnemia', auth.validate(), function(req, res){
-			var inserirAnemia = req.body;
-			js.validate(inserirAnemia, inserirAnemiaSchema);
-			funBase.inserirAnemia(inserirAnemia, res);
+			var usuario = auth.validacaoUsuario();
+			console.log("variavel usuario");
+			console.log(usuario);
+			var animal = req.body;
+			funBase.inserirAnemia(animal, res);
 		});
 
 		app.delete('/excluirAuxiliar', auth.validate(), function(req,res, next){
-			var usuario = req.body;
-			funBase.excluirAuxiliarMedico(usuario, res);
+			var usuario = auth.validacaoUsuario();
+			console.log("variavel usuario");
+			console.log(usuario);
+			var auxiliar = req.body;
+			funBase.excluirAuxiliarMedico(auxiliar, usuario, res);
 		});
 
 		app.delete('/deletarMedico', auth.validate(), function(req,res, next){
-			var usuario = req.body;
+			var usuario = auth.validacaoUsuario();
+			console.log("variavel usuario");
+			console.log(usuario);
 			funBase.excluirMedico(usuario, res);
 		});
 
@@ -219,46 +238,62 @@ module.exports = {
 		});
 
 		app.post('/inserirAnimalAuxiliar', auth.validate(), function(req, res){
-			var cadastroAniAux = req.body;
-			js.validate(cadastroAniAux, cadastroAniAuxSchema);
-			funBase.cadastraAuxiliar(cadastroAniAux, res);
+			var usuario = auth.validacaoUsuario();
+			console.log("variavel usuario");
+			console.log(usuario);
+			var animal = req.body;
+			funBase.inserirAnimalAuxiliar(usuario, animal, res);
 		});
 
 		app.put('/atualizaAuxiliar', auth.validate(), function(req, res){
-			var atualizaAuxiliar = req.body;
-			js.validate(atualizaAuxiliar, atualizarAuxiliarSchema);
-			funBase.atualizarAuxiliar(atualizaAuxiliar, res);
+			var usuario = auth.validacaoUsuario();
+			console.log("variavel usuario");
+			console.log(usuario);
+			var auxiliar = req.body;
+			funBase.atualizarAuxiliar(auxiliar, usuario, res);
 		});
 
 		app.put('/atualizaSenhaAuxiliar', auth.validate(), function(req, res){
-			var atualizaSenhaAuxiliar = req.body;
-			js.validate(atualizaSenhaAuxiliar, atualizaSenhaAuxiliarSchema);
-			funBase.atualizarSenhaAuxiliar(atualizaSenhaAuxiliar, res);
+			var usuario = auth.validacaoUsuario();
+			console.log("variavel usuario");
+			console.log(usuario);
+			var auxiliar = req.body;
+			funBase.atualizarSenhaAuxiliar(auxiliar, usuario, res);
 		});
 
 		app.put('/inserirAnimalAuxiliar', auth.validate(), function(req, res){
-			var inserirAnimalAuxiliar = req.body;
-			js.validate(inserirAnimalAuxiliar, inserirAnimalAuxiliarSchema);
-			funBase.inserirAnimalAuxiliar(inserirAnimalAuxiliar, res);
+			var usuario = auth.validacaoUsuario();
+			console.log("variavel usuario");
+			console.log(usuario);
+			var animal = req.body;
+			funBase.inserirAnimalAuxiliar(usuario, animal, res);
 		});
 
 		app.delete('/deletarAuxiliar', auth.validate(), function(req,res, next){
-			var usuario = req.body;
+			var usuario = auth.validacaoUsuario();
+			console.log("variavel usuario");
+			console.log(usuario);
 			funBase.excluirAuxiliar(usuario, res);
 		});
 
-		app.get('/medicosAuxiliares', function(req,res, next){  
-			var usuario = req.body;
+		app.get('/medicosAuxiliares', auth.validate(), function(req,res, next){  
+			var usuario = auth.validacaoUsuario();
+			console.log("variavel usuario");
+			console.log(usuario);
 			funBase.listarMedicosDosAuxiliares(usuario, res);
 		});
 
-		app.get('/animaisDosMedicos', function(req,res, next){  
-			var usuario = req.body;
+		app.get('/animaisDosMedicos', auth.validate(), function(req,res, next){  
+			var usuario = auth.validacaoUsuario();
+			console.log("variavel usuario");
+			console.log(usuario);
 			funBase.listarAnimaisDosMedicosAuxiliares(usuario, res);
 		});
 
 		app.get('/animaisAuxiliares', function(req,res, next){  
-			var usuario = req.body;
+			var usuario = auth.validacaoUsuario();
+			console.log("variavel usuario");
+			console.log(usuario);
 			funBase.listarAnimaisDosAuxiliares(usuario, res);
 		});
 //////////////////////////Tela Clinica///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////		
@@ -284,6 +319,15 @@ module.exports = {
 
 		app.get('/anemiaMicrociticoHipocromico', function(req,res){  
 			funBase.anemiaMicrociticoHipocromico(req, res);
+		});
+
+		app.get('/selecionarEspecie', function(req, res){
+			funBase.especies(req, res);
+		});
+
+		app.get('/selecionarRaca/:idEspecie', function(req, res, next){
+			var idEspecie = req.params.idEspecie;
+			funBase.raca(idEspecie, res);
 		});
 
 		app.get('/selecionarEstado', function(req,res){

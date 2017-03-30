@@ -2,13 +2,9 @@
 	"title": "Auxiliar Medico Schema",
 	"type": "object", 
 	"properties":{
-		"username":{
-			"type":"string"
-		},
-		"cpfAuxiliar":{
-			"type":"string"
+		"idauxiliar":{
+			"type":"integer"
 		}
-
 	},
-	"required": ["username","cpfAuxiliar"]
+	"required": ["idauxiliar"]
 }

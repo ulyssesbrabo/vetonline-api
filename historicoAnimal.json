@@ -5,10 +5,10 @@
 		"historicoAnimal":{
 			"type":"string"
 		},
-		"crmv":{
-			"type":"string"
+		"idAnimal":{
+			"type":"integer"
 		}
 
 	},
-	"required": ["historicoAnimal","crmv"]
+	"required": ["historicoAnimal","idAnimal"]
 }
