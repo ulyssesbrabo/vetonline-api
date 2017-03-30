@@ -49,21 +49,30 @@ module.exports = {
 		});
 
 		app.put('/RespUpdDados', auth.validate(), function(req, res){
+			var usuario = auth.validacaoUsuario();
+			console.log("variavel usuario");
+			console.log(usuario);
 			var responsavelUpdateDados = req.body;
 			js.validate(responsavelUpdateDados, respUpdDadosSchema);
-			funBase.atualizarDadosResponsavel(responsavelUpdateDados, res);
+			funBase.atualizarDadosResponsavel(responsavelUpdateDados, usuario, res);
 		});
 
 		app.put('/RespUpdContatos', auth.validate(), function(req, res){
+			var usuario = auth.validacaoUsuario();
+			console.log("variavel usuario");
+			console.log(usuario);
 			var responsavelUpdateContatos = req.body;
 			js.validate(responsavelUpdateContatos, respUpdContatosSchema);
-			funBase.atualizarContatosResponsavel(responsavelUpdateContatos, res);
+			funBase.atualizarContatosResponsavel(responsavelUpdateContatos, usuario, res);
 		});
 
 		app.put('/RespUpdSenha', auth.validate(), function(req, res){
+			var usuario = auth.validacaoUsuario();
+			console.log("variavel usuario");
+			console.log(usuario);
 			var responsavelUpdateSenha = req.body;
 			js.validate(responsavelUpdateSenha, respUpdSenhaSchema);
-			funBase.atualizarSenhaResponsavel(responsavelUpdateSenha, res);
+			funBase.atualizarSenhaResponsavel(responsavelUpdateSenha, usuario, res);
 		});
 
 		app.delete('/excluirResponsavel', auth.validate(), function(req,res, next){
@@ -71,13 +80,17 @@ module.exports = {
 			funBase.excluirRegistroResponsavel(usuario, res);
 		});
 
-		app.get('/perfilResponsavel', function(req,res, next){  
-			var usuario = req.body;
+		app.get('/perfilResponsavel', auth.validate(), function(req,res, next){  
+			var usuario = auth.validacaoUsuario();
+			console.log("variavel usuario");
+			console.log(usuario);
 			funBase.perfilResponsavel(usuario, res);
 		});
 
-		app.get('/Medicos&Auxiliares', function(req,res, next){  
-			var usuario = req.body;
+		app.get('/Medicos&Auxiliares', auth.validate(), function(req,res, next){  
+			var usuario = auth.validacaoUsuario();
+			console.log("variavel usuario");
+			console.log(usuario);
 			funBase.listarMedicoseAuxiliares(usuario, res);
 		});
 
@@ -157,8 +170,10 @@ module.exports = {
 			funBase.listarAuxiliaresDoMedicos(usuario, res);
 		});
 
-		app.get('/auxiliaresCadastrados', function(req,res, next){  
-			var usuario = req.body;
+		app.get('/auxiliaresCadastrados', auth.validate(), function(req,res, next){  
+			var usuario = auth.validacaoUsuario();
+			console.log("variavel usuario");
+			console.log(usuario);
 			funBase.listarAuxiliaresCadastrados(usuario, res);
 		});
 

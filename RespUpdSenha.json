@@ -4,11 +4,8 @@
 	"properties":{
 		"senhaResponsavel":{
 			"type":"string"
-		},
-		"cpfResponsavel":{
-			"type":"string"
 		}
 
 	},
-	"required": ["senhaResponsavel","cpfResponsavel"]
+	"required": ["senhaResponsavel"]
 }

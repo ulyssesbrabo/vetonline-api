@@ -76,7 +76,7 @@ var auth = require('../auth')
 	//CadastroResponsavel
 	function cadastraResponsavel(responsavel, res) {
 	    connection.acquire(function(err, con) {
-		      con.query( "insert into Responsavel(cpfResponsavel, nomeResponsavel, enderecoResponsavel, telefoneResponsavel, emailResponsavel, senhaResponsavel, Estados, Cidade) values(?,?,?,?,?,?,?,?)", [responsavel.cpfResponsavel,responsavel.nomeResponsavel,responsavel.enderecoResponsavel,responsavel.telefoneResponsavel,responsavel.emailResponsavel,responsavel.senhaResponsavel,responsavel.Estados,responsavel.Cidade] , function(err, result) {
+		      con.query( "insert into Responsavel(cpfResponsavel, nomeResponsavel, enderecoResponsavel, telefoneResponsavel, emailResponsavel, senhaResponsavel, Estado, Cidade) values(?,?,?,?,?,?,?,?)", [responsavel.cpfResponsavel,responsavel.nomeResponsavel,responsavel.enderecoResponsavel,responsavel.telefoneResponsavel,responsavel.emailResponsavel,responsavel.senhaResponsavel,responsavel.Estados,responsavel.Cidade] , function(err, result) {
 		        con.release();
 			        if (err) {
 			          res.send({status: 1, message: 'TODO creation failed'});
@@ -88,9 +88,9 @@ var auth = require('../auth')
 	};
 	//Atualizações
 	//atualização de dados básicos do responsavel
-	function atualizarDadosResponsavel(responsavelUpdateDados, res) {
+	function atualizarDadosResponsavel(responsavelUpdateDados, usuario, res) {
 	    connection.acquire(function(err, con) {
-	      con.query( "update Responsavel set nomeResponsavel = ?, enderecoResponsavel = ? where cpfResponsavel = ?", [responsavelUpdateDados.nomeResponsavel ,responsavelUpdateDados.enderecoResponsavel, responsavelUpdateDados.cpfResponsavel], function(err, result){
+	      con.query( "update Responsavel set nomeResponsavel = ?, enderecoResponsavel = ? where idusuario = ?", [responsavelUpdateDados.nomeResponsavel ,responsavelUpdateDados.enderecoResponsavel, usuario.idusuario], function(err, result){
 	        con.release();
 	        if (err) {
 	          res.send({status: 1, message: 'TODO update failed'});
@@ -101,9 +101,9 @@ var auth = require('../auth')
 	    }); 
 	};
 	//Atualizar Contatos do responsavel
-	function atualizarContatosResponsavel(responsavelUpdateContatos, res) {
+	function atualizarContatosResponsavel(responsavelUpdateContatos, usuario, res) {
 	    connection.acquire(function(err, con) {
-	      con.query("update Responsavel set telefoneResponsavel = ?, emailResponsavel = ? where cpfResponsavel = ?", [responsavelUpdateContatos.telefoneResponsavel ,responsavelUpdateContatos.emailResponsavel,responsavelUpdateContatos.cpfResponsavel], function(err, result) {
+	      con.query("update Responsavel set telefoneResponsavel = ?, emailResponsavel = ? where idusuario = ?", [responsavelUpdateContatos.telefoneResponsavel ,responsavelUpdateContatos.emailResponsavel, usuario.idusuario], function(err, result) {
 	        con.release();
 	        if (err) {
 	          res.send({status: 1, message: 'TODO update failed'});
@@ -114,9 +114,9 @@ var auth = require('../auth')
 	    });
 	};
 	//Atualizar Senha do responsavel
-	function atualizarSenhaResponsavel(responsavelUpdateSenha, res) {
+	function atualizarSenhaResponsavel(responsavelUpdateSenha, usuario, res) {
 	    connection.acquire(function(err, con) {
-	      con.query("update Responsavel set senhaResponsavel = ? where cpfResponsavel = ?", [responsavelUpdateSenha.senhaResponsavel ,responsavelUpdateSenha.cpfResponsavel], function(err, result) {
+	      con.query("update Responsavel set senhaResponsavel = ? where idusuario = ?", [responsavelUpdateSenha.senhaResponsavel ,usuario.idusuario], function(err, result) {
 	        con.release();
 	        if (err) {
 	          res.send({status: 1, message: 'TODO update failed'});
@@ -144,7 +144,7 @@ var auth = require('../auth')
 	//Perfil do responsavel
 	function perfilResponsavel(usuario, res){
 		connection.acquire(function(err, con){
-			con.query("select Responsavel.cpfResponsavel, nomeResponsavel, enderecoResponsavel, telefoneResponsavel, emailResponsavel, nomeEstados, nomeCidade, nomeAnimal, nomeEspecie, nomeRaca from Animal, Responsavel, Especie_Raca, Especie, Raca, Estado_Cidade, Estados, Cidade where Responsavel.Estados = Estado_Cidade.Estados and Estado_Cidade.Estados = Estados.idEstados and Responsavel.Cidade = Estado_Cidade.Cidade and Estado_Cidade.Cidade = Cidade.idCidade and Animal.Especie = Especie_Raca.Especie and Especie_Raca.Especie = Especie.idEspecie and Animal.Raca = Especie_Raca.Raca and Especie_Raca.Raca = Raca.idRaca and Animal.cpfResponsavel = Responsavel.cpfResponsavel and Responsavel.cpfResponsavel = ?", [usuario.username], function(err, result){
+			con.query("select Responsavel.cpfResponsavel, Responsavel.nomeResponsavel, Responsavel.enderecoResponsavel, Responsavel.telefoneResponsavel, emailResponsavel from Responsavel where Responsavel.idusuario = ?", [usuario.idusuario], function(err, result){
 				con.release();
 				res.json(result);
 			});
@@ -236,7 +236,7 @@ var auth = require('../auth')
 	//Tela dos Auxiliares: medicos que os auxiliares prestam serviços
 	function listarMedicosDosAuxiliares(usuario, res){
 		connection.acquire(function(err, con){
-			con.query("select crmv, nomeMedico, emailMedico, telefoneMedico from Medico, Auxiliar, Medico_Auxiliar where Medico_Auxiliar.CPFAuxiliar = Auxiliar.cpfAuxiliar and Medico_Auxiliar.CRMVMedico = Medico.crmv and Auxiliar.cpfAuxiliar = ?", [usuario.username], function(err, result){
+			con.query("select crmv, nomeMedico, emailMedico, telefoneMedico from Medico, Auxiliar, Medico_Auxiliar where Medico_Auxiliar.Auxiliar = Auxiliar.idusuario and Medico_Auxiliar.Medico = Medico.idusuario and Auxiliar.idusuario = ?", [usuario.idusuario], function(err, result){
 				con.release();
 				res.json(result);
 			});
@@ -245,7 +245,7 @@ var auth = require('../auth')
 	//Tela dos Medicos: Perfil dos Médicos
 	function perfilMedico(usuario, res){
 		connection.acquire(function(err, con){
-			con.query("select Medico.crmv, nomeMedico, telefoneMedico, emailMedico, perfilMedico, Estados.nomeEstados, Cidade.nomeCidade from Medico, Estado_Cidade, Estados, Cidade where Medico.Estados = Estado_Cidade.Estados and Estado_Cidade.Estados = Estados.idEstados and Medico.Cidade = Estado_Cidade.Cidade and Estado_Cidade.Cidade = Cidade.idCidade and Medico.crmv = ?", [usuario.username], function(err, result){
+			con.query("select Medico.crmv, nomeMedico, telefoneMedico, emailMedico, perfilMedico, Estados.nomeEstados, Cidade.nomeCidade from Medico, EstadosCidade, Estados, Cidade where Medico.Estado = EstadosCidade.Estados and EstadosCidade.Estados = Estados.idEstados and Medico.Cidade = EstadosCidade.Cidade and EstadosCidade.Cidade = Cidade.idCidade and Medico.idusuario = ?", [usuario.idusuario], function(err, result){
 				con.release();
 				res.json(result);
 			});
@@ -254,7 +254,7 @@ var auth = require('../auth')
 	//Tela dos Responsaveis: Medicos e seus auxiliares
 	function listarMedicoseAuxiliares(usuario, res){
 		connection.acquire(function(err, con){
-			con.query("select Medico.crmv, nomeMedico, nomeAuxiliar, telefoneAuxiliar from Medico, Auxiliar, Responsavel, Medico_Auxiliar, Estados where Medico_Auxiliar.CRMVMedico = Medico.crmv and Medico_Auxiliar.CPFAuxiliar = Auxiliar.cpfAuxiliar and Medico.Estados = Responsavel.Estados and Medico.Estados = Estados.idEstados and Responsavel.Estados = Estados.idEstados and Responsavel.cpfResponsavel = ?", [usuario.username], function(err, result){
+			con.query("select Medico.crmv, nomeMedico, nomeAuxiliar, telefoneAuxiliar from Medico, Auxiliar, Responsavel, Medico_Auxiliar, Estados where Medico_Auxiliar.Medico = Medico.idusuario and Medico_Auxiliar.Auxiliar = Auxiliar.idusuario and Medico.Estado = Responsavel.Estado and Medico.Estado = Estados.idEstados and Responsavel.Estado = Estados.idEstados and Responsavel.idusuario = ?", [usuario.idusuario], function(err, result){
 				con.release();
 				res.json(result);
 			});
@@ -349,7 +349,7 @@ var auth = require('../auth')
 	//Tela dos medicos: auxiliares cadastrados no mesmo estado dos medicos
 	function listarAuxiliaresCadastrados(usuario, res){
 		connection.acquire(function(err, con){
-			con.query('select Auxiliar.cpfAuxiliar, nomeAuxiliar, emailAuxiliar, telefoneAuxiliar, Estados.nomeEstados from Auxiliar, Medico, Medico_Auxiliar, Estados where Medico.Estados = Estados.idEstados and Auxiliar.Estados = Estados.idEstados and Auxiliar.cpfAuxiliar = Medico_Auxiliar.CPFAuxiliar and Medico_Auxiliar.CRMVMedico = Medico.crmv and Medico.crmv=?', [usuario.username], function(err, result){
+			con.query("select nomeAuxiliar, telefoneAuxiliar, emailAuxiliar from Auxiliar, Medico where Auxiliar.Estado = Medico.Estado and Medico.idusuario = ?", [usuario.idusuario], function(err, result){
 				con.release();
 				res.json(result);
 			});
@@ -555,7 +555,7 @@ var auth = require('../auth')
 
 	function autenticacaoDoMedico(usuario, res, rows){
 		connection.acquire(function(err, con){
-			con.query("select Medico.crmv, Medico.idusuario from Medico where Medico.crmv = ? and Medico.senhaMedico = ?", [usuario.username, usuario.password], function(err, result, rows){
+			con.query("select Medico.idusuario from Medico where Medico.crmv = ? and Medico.senhaMedico = ?", [usuario.username, usuario.password], function(err, result, rows){
 				con.release();
 				if (result.length == 0) {
 					res.status(403);
@@ -593,13 +593,13 @@ var auth = require('../auth')
 
 	function autenticacaoDoResponsavel(usuario, res){	
 		connection.acquire(function(err, con){
-			con.query("select Responsavel.cpfResponsavel, Responsavel.nomeResponsavel from Responsavel where cpfResponsavel = ? and senhaResponsavel = ?", [usuario.username, usuario.password], function(err, result){
+			con.query("select Responsavel.idusuario from Responsavel where cpfResponsavel = ? and senhaResponsavel = ?", [usuario.username, usuario.password], function(err, result){
 				con.release();
 				if (result.length == 0) {
 					res.status(403);
 					return res.json("erro autenticação")
 				}
-				var token = auth.sign(result.usuario, 1)
+				var token = auth.sign(result[0], 4)
 				res.json({
 					user:result[0],
 					token:token

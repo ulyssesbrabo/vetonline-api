@@ -7,11 +7,8 @@
 		},
 		"emailResponsavel":{
 			"type":"string"
-		},
-		"cpfResponsavel":{
-			"type":"string"
 		}
 
 	},
-	"required": ["telefoneResponsavel","emailResponsavel","cpfResponsavel"]
+	"required": ["telefoneResponsavel","emailResponsavel"]
 }

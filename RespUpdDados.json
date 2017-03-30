@@ -7,11 +7,8 @@
 		},
 		"enderecoResponsavel":{
 			"type":"string"
-		},
-		"cpfResponsavel":{
-			"type":"string"
 		}
 
 	},
-	"required": ["nomeResponsavel","enderecoResponsavel","cpfResponsavel"]
+	"required": ["nomeResponsavel","enderecoResponsavel"]
 }
