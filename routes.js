@@ -43,9 +43,12 @@ module.exports = {
 		});
 
 		app.post('/criarAnimalResponsavel', auth.validate(), function(req, res){
+			var usuario = auth.validacaoUsuario();
+			console.log("variavel usuario");
+			console.log(usuario);
 			var animalRes = req.body;
 			js.validate(animalRes, animalResSchema);
-			funBase.cadastroAnimalUsuario(animalRes, res);
+			funBase.cadastroAnimalResp(animalRes, usuario, res);
 		});
 
 		app.put('/RespUpdDados', auth.validate(), function(req, res){
@@ -76,8 +79,18 @@ module.exports = {
 		});
 
 		app.delete('/excluirResponsavel', auth.validate(), function(req,res, next){
-			var usuario = req.body;
+			var usuario = auth.validacaoUsuario();
+			console.log("variavel usuario");
+			console.log(usuario);
 			funBase.excluirRegistroResponsavel(usuario, res);
+		});
+
+		app.delete('/excluirAnimalResp', auth.validate(), function(req,res, next){
+			var usuario = auth.validacaoUsuario();
+			console.log("variavel usuario");
+			console.log(usuario);
+			var animal = req.body;
+			funBase.deletarAnimalDoResponsavel(animal, usuario, res)
 		});
 
 		app.get('/perfilResponsavel', auth.validate(), function(req,res, next){  
@@ -94,8 +107,10 @@ module.exports = {
 			funBase.listarMedicoseAuxiliares(usuario, res);
 		});
 
-		app.get('/AnimaisResponsavel', function(req,res, next){  
-			var usuario = req.body;
+		app.get('/AnimaisResponsavel', auth.validate(), function(req,res, next){  
+			var usuario = auth.validacaoUsuario();
+			console.log("variavel usuario");
+			console.log(usuario);
 			funBase.listarAnimaisResponsavel(usuario, res);
 		});
 //////////////////////////Tela Medicos///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////		
@@ -137,9 +152,12 @@ module.exports = {
 		});
 
 		app.put('/adicionarAnimal', auth.validate(), function(req, res){
-			var inserirAnimalMedico = req.body;
-			js.validate(inserirAnimalMedico, adicionarAnimalMedicoSchema);
-			funBase.inserirAnimalMedico(inserirAnimalMedico, res);
+			var usuario = auth.validacaoUsuario();
+			console.log("variavel usuario");
+			console.log(usuario);
+			var animal = req.body;
+			js.validate(animal, adicionarAnimalMedicoSchema);
+			funBase.inserirAnimalMedico(animal, usuario, res);
 		});
 
 		app.put('/inserirAnemia', auth.validate(), function(req, res){
@@ -158,8 +176,10 @@ module.exports = {
 			funBase.excluirMedico(usuario, res);
 		});
 
-		app.get('/perfilMedico', function(req,res, next){  
-			var usuario = req.body;
+		app.get('/perfilMedico', auth.validate(), function(req,res, next){  
+			var usuario = auth.validacaoUsuario();
+			console.log("variavel usuario");
+			console.log(usuario);
 			funBase.perfilMedico(usuario, res);
 		});
 
@@ -177,13 +197,17 @@ module.exports = {
 			funBase.listarAuxiliaresCadastrados(usuario, res);
 		});
 
-		app.get('/animaisMedico', function(req,res, next){  
-			var usuario = req.body;
+		app.get('/animaisMedico', auth.validate(), function(req,res, next){  
+			var usuario = auth.validacaoUsuario();
+			console.log("variavel usuario");
+			console.log(usuario);
 			funBase.listarAnimaisMedico(usuario, res);
 		});
 
-		app.get('/animaisCadastrados', function(req,res, next){  
-			var usuario = req.body;
+		app.get('/animaisCadastrados', auth.validate(), function(req,res, next){  
+			var usuario = auth.validacaoUsuario();
+			console.log("variavel usuario");
+			console.log(usuario);
 			funBase.listarAnimaisCadastrados(usuario, res);
 		});
 //////////////////////////Tela Auxiliar////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////		

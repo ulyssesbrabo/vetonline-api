@@ -2,9 +2,6 @@
 	"title": "animalRes Schema",
 	"type": "object", 
 	"properties":{
-		"cpfResponsavel":{
-			"type":"string"
-		},
 		"nomeAnimal":{
 			"type":"string"
 		},
@@ -16,5 +13,5 @@
 		}
 
 	},
-	"required": ["cpfResponsavel","nomeAnimal","Especie","Raca"]
+	"required": ["nomeAnimal","Especie","Raca"]
 }

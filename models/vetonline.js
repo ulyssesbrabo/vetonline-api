@@ -130,7 +130,7 @@ var auth = require('../auth')
 	//Excluir Medico
 	function excluirRegistroResponsavel(usuario, res) {
 	    connection.acquire(function(err, con) {
-	      con.query( "delete from Responsavel, Animal using Responsavel inner join Animal where Responsavel.cpfResponsavel = Animal.cpfResponsavel and Responsavel.cpfResponsavel = ?", [usuario.username],function(err, result) {
+	      con.query( "delete from Responsavel using Responsavel inner join Animal where Responsavel.idusuario = Animal.Responsavel and Responsavel.idusuario = ?", [usuario.idusuario],function(err, result) {
 	        con.release();
 	        if (err) {
 	          res.send({status: 1, message: 'Failed to delete'});
@@ -359,9 +359,9 @@ var auth = require('../auth')
 	// Classe Animal e todas as suas referencias
 	//Cadastros
 	//cadastro animal feito pelo usuario
-	function cadastroAnimalUsuario(animalRes, res) {
+	function cadastroAnimalResp(animalRes, usuario, res) {
     connection.acquire(function(err, con) {
-      con.query("insert into Animal(cpfResponsavel, nomeAnimal, Especie, Raca) values(?,?,?,?)", [animalRes.cpfResponsavel, animalRes.nomeAnimal, animalRes.Especie, animalRes.Raca], function(err, result) {
+      con.query("insert into Animal(nomeAnimal, Especie, Raca, Responsavel) values(?,?,?,?)", [animalRes.nomeAnimal, animalRes.Especie, animalRes.Raca, usuario.idusuario], function(err, result) {
         con.release();
 	        if (err) {
 	          res.send({status: 1, message: 'TODO creation failed'});
@@ -425,9 +425,9 @@ var auth = require('../auth')
 	    });
 	};
 	//Inserir Animal ao medicos apenas o médico
-	function inserirAnimalMedico(inserirAnimalMedico, res) {
+	function inserirAnimalMedico(animal, usuario, res) {
 	    connection.acquire(function(err, con) {
-	      con.query("update Animal set Animal.crmvMedico = ? where Animal.cpfResponsavel = ?", [inserirAnimalMedico.crmv, inserirAnimalMedico.cpfResponsavel], function(err, result) {
+	      con.query("update Animal set Animal.Medico = ? where Animal.idAnimal = ?", [usuario.idusuario, animal.idAnimal], function(err, result) {
 	        con.release();
 	        if (err) {
 	          res.send({status: 1, message: 'TODO update failed'});
@@ -451,9 +451,9 @@ var auth = require('../auth')
 	    });
 	};
 	//Responsavel exclui o animal
-	function deletarAnimalDoResponsavel(cpfResponsavel, res) {
+	function deletarAnimalDoResponsavel(animal, usuario, res) {
 	    connection.acquire(function(err, con) {
-	      con.query("delete from Animal where cpfResponsavel = "+cpfResponsavel+"", function(err, result) {
+	      con.query("delete from Animal where Animal.idAnimal = ? and Animal.Responsavel = ?", [animal.idAnimal, usuario.idusuario], function(err, result) {
 	        con.release();
 	        if (err) {
 	          res.send({status: 1, message: 'Failed to delete'});
@@ -488,7 +488,7 @@ var auth = require('../auth')
 	//listarAnimaisResponsavel
 	function listarAnimaisResponsavel (usuario,res){
 		connection.acquire(function(err, con){
-			con.query("select nomeAnimal, Especie.nomeEspecie, Raca.nomeRaca from Animal, Especie, Raca, Responsavel where Animal.Especie = Especie.idEspecie and Animal.Raca = Raca.idRaca and Animal.cpfResponsavel = Responsavel.cpfResponsavel and Responsavel.cpfResponsavel = ?", [usuario.username], function(err, result){
+			con.query("select nomeAnimal, Especie.nomeEspecie, Raca.nomeRaca from Animal, Especie, Raca, Responsavel where Animal.Especie = Especie.idEspecie and Animal.Raca = Raca.idRaca and Animal.Responsavel = Responsavel.idusuario and Responsavel.idusuario = ?", [usuario.idusuario], function(err, result){
 				con.release();
 				res.json(result);
 			});
@@ -498,7 +498,7 @@ var auth = require('../auth')
 	//listarAnimaisMedico
 	function listarAnimaisMedico (usuario, res){
 		connection.acquire(function(err, con){
-			con.query("select nomeAnimal, Especie.nomeEspecie, Raca.nomeRaca, Responsavel. nomeResponsavel, Responsavel.telefoneResponsavel from Animal, Especie, Raca, Responsavel, Medico where Animal.Especie = Especie.idEspecie and Animal.Raca = Raca.idRaca and Animal.crmvMedico = Medico.crmv and Animal.cpfResponsavel = Responsavel.cpfResponsavel and Medico.crmv = ?", [usuario.username], function(err, result){
+			con.query("select nomeAnimal, Especie.nomeEspecie, Raca.nomeRaca, Responsavel. nomeResponsavel, Responsavel.telefoneResponsavel from Animal, Especie, Raca, Responsavel, Medico where Animal.Especie = Especie.idEspecie and Animal.Raca = Raca.idRaca and Animal.Medico = Medico.idusuario and Animal.Responsavel = Responsavel.idusuario and Medico.idusuario = ?", [usuario.idusuario], function(err, result){
 				con.release();
 				res.json(result);
 			});
@@ -508,7 +508,7 @@ var auth = require('../auth')
 	//listarAnimaisCadastrados
 	function listarAnimaisCadastrados (usuario, res){
 		connection.acquire(function(err, con){
-			con.query("select nomeAnimal, Especie.nomeEspecie, Raca.nomeRaca, Responsavel.nomeResponsavel, Responsavel.telefoneResponsavel from Animal, Responsavel, Estados, Medico, Especie, Raca where Animal.Especie = Especie.idEspecie and Animal.Raca = Raca.idRaca and Animal.cpfResponsavel = Responsavel.cpfResponsavel and Responsavel.Estados = Estados.idEstados and Medico.Estados = Estados.idEstados and Responsavel.Estados = Medico.Estados and Medico.crmv = ?", [usuario.username], function(err, result){
+			con.query("select nomeAnimal, Especie.nomeEspecie, Raca.nomeRaca, Responsavel.nomeResponsavel, Responsavel.telefoneResponsavel from Animal, Responsavel, Estados, Medico, Especie, Raca where Animal.Especie = Especie.idEspecie and Animal.Raca = Raca.idRaca and Animal.Responsavel = Responsavel.idusuario and Responsavel.Estado = Estados.idEstados and Medico.Estado = Estados.idEstados and Responsavel.Estado = Medico.Estado and Medico.idusuario = ?", [usuario.idusuario], function(err, result){
 				con.release();
 				res.json(result);
 			});
@@ -576,13 +576,30 @@ var auth = require('../auth')
 
 	function autenticacaoDoAuxiliar(usuario, res){
 		connection.acquire(function(err, con){
-			con.query("select Auxiliar.cpfAuxiliar, Auxiliar.nomeAuxiliar from Auxiliar where Auxiliar.cpfAuxiliar = ? and Auxiliar.senhaAuxiliar = ?", [usuario.username, usuario.password], function(err, result){
+			con.query("select Auxiliar.idusuario from Auxiliar where Auxiliar.cpfAuxiliar = ? and Auxiliar.senhaAuxiliar = ?", [usuario.username, usuario.password], function(err, result){
 				con.release();
 				if (result.length == 0) {
 					res.status(403);
 					return res.json("erro autenticação")
 				}
-				var token = auth.sign(result.usuario, 2)
+				var token = auth.sign(result[0], 2)
+				res.json({
+					user:result[0],
+					token:token
+				});
+			});
+		});
+	};
+
+	function autenticacaoClinica(usuario, res){
+		connection.acquire(function(err, con){
+			con.query("select Clinica.cnpj, Clinica.nomeClinica from Clinica where Clinica.cnpj = ? and Clinica.senhaClinca = ?", [usuario.username, usuario.password], function(err, result){
+				con.release();
+				if (result.length == 0) {
+					res.status(403);
+					return res.json("erro autenticação")
+				}
+				var token = auth.sign(result[0], 3)
 				res.json({
 					user:result[0],
 					token:token
@@ -600,22 +617,6 @@ var auth = require('../auth')
 					return res.json("erro autenticação")
 				}
 				var token = auth.sign(result[0], 4)
-				res.json({
-					user:result[0],
-					token:token
-				});
-			});
-		});
-	};
-	function autenticacaoClinica(usuario, res){
-		connection.acquire(function(err, con){
-			con.query("select Clinica.cnpj, Clinica.nomeClinica from Clinica where Clinica.cnpj = ? and Clinica.senhaClinca = ?", [usuario.username, usuario.password], function(err, result){
-				con.release();
-				if (result.length == 0) {
-					res.status(403);
-					return res.json("erro autenticação")
-				}
-				var token = auth.sign(result.usuario, 4)
 				res.json({
 					user:result[0],
 					token:token

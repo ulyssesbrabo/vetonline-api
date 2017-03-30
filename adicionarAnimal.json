@@ -2,13 +2,13 @@
 	"title": "Adicionar Animal Schema",
 	"type": "object", 
 	"properties":{
-		"cpfResponsavel":{
-			"type":"string"
+		"idusuario":{
+			"type":"integer"
 		},
-		"crmv":{
-			"type":"string"
+		"idAnimal":{
+			"type":"integer"
 		}
 
 	},
-	"required": ["cpfResponsavel","crmv"]
+	"required": ["idusuario","idAnimal"]
 }
