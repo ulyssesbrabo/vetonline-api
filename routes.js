@@ -30,8 +30,8 @@ module.exports = {
 	configure: function(app){
 		app.all('*', function(req, res, next){
 			res.header("Access-Control-Allow-Origin", "*");
-			res.header("Access-Control-Allow-Methods", "'*'");
-			res.header("Access-Control-Allow-Headers", "'Origin, X-Requested-With, Content-Type, Accept, Authorization'");
+			res.header("Access-Control-Allow-Methods", '*');
+			res.header("Access-Control-Allow-Headers", 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
 			next();
 		});
 
@@ -202,7 +202,7 @@ module.exports = {
 			funBase.perfilMedico(usuario, res);
 		});
 
-		app.get('/auxiliaresMedicos', auth.validate(), function(req,res, next){  
+		app.get('/auxiliaresMedicos', function(req,res, next){  
 			var usuario = auth.validacaoUsuario();
 			console.log("variavel usuario");
 			console.log(usuario);

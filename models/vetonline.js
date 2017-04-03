@@ -348,6 +348,7 @@ var auth = require('../auth')
 		connection.acquire(function(err, con){
 			con.query("select Auxiliar.cpfAuxiliar, nomeAuxiliar, emailAuxiliar, telefoneAuxiliar from Auxiliar, Medico, Medico_Auxiliar where Medico_Auxiliar.Medico = Medico.idusuario and Auxiliar.idusuario = Medico_Auxiliar.Auxiliar and Medico.idusuario=?", [usuario.idusuario], function(err, result){
 				con.release();
+				res.status(200);
 				res.json(result);
 				console.log(result);
 			});
