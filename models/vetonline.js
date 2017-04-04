@@ -182,7 +182,7 @@ var auth = require('../auth')
 	//Inserir auxiliar ao médico na tablela auxiliar médico
 	function inserirAuxiliarMedico(auxiliar, usuario, res) {
     connection.acquire(function(err, con) {
-      con.query( "insert into Medico_Auxiliar(Medico, Auxiliar) values(?,?)", [usuario.idusuario, auxiliar.idauxiliar], function(err, result) {
+      con.query( "insert into Medico_Auxiliar(Medico, Auxiliar) values(?,?)", [usuario.idusuario, auxiliar.idusuario], function(err, result) {
         con.release();
 	        if (err) {
 	          res.send({status: 1, message: 'TODO creation failed'});
@@ -221,8 +221,11 @@ var auth = require('../auth')
 	};
 	//Excluir vinculo com auxiliar
 	function excluirAuxiliarMedico(usuario, auxiliar, res) {
+		console.log("Função Excluir Auxiliar")
+		console.log(usuario);
+		console.log(auxiliar);
 	    connection.acquire(function(err, con) {
-	      con.query("delete from Medico_Auxiliar where Medico_Auxiliar.Medico = ? and Medico_Auxiliar.Auxiliar = ?", [usuario.idusuario, auxiliar.idauxiliar], function(err, result) {
+	      con.query("delete from Medico_Auxiliar where Medico_Auxiliar.Medico = ? and Medico_Auxiliar.Auxiliar = ?", [usuario.idusuario, auxiliar.idusuario], function(err, result) {
 	        con.release();
 	        if (err) {
 	          res.send({status: 1, message: 'Failed to delete'});

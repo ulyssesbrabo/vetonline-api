@@ -29,7 +29,7 @@ var auth = require("./auth.js");
 module.exports = {	
 	configure: function(app){
 		app.all('*', function(req, res, next){
-			res.header("Access-Control-Allow-Origin", "*");
+			res.header("Access-Control-Allow-Origin", '*');
 			res.header("Access-Control-Allow-Methods", '*');
 			res.header("Access-Control-Allow-Headers", 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
 			next();
@@ -132,7 +132,8 @@ module.exports = {
 			console.log("variavel usuario");
 			console.log(usuario);
 			var auxiliar = req.body;
-			js.validate(auxiliar, auxiliarmedicoSchema);
+			console.log("Variavel Auxiliares");
+			console.log(auxiliar);
 			funBase.inserirAuxiliarMedico(auxiliar, usuario, res);
 		});
 
@@ -185,6 +186,8 @@ module.exports = {
 			console.log("variavel usuario");
 			console.log(usuario);
 			var auxiliar = req.body;
+			console.log("variavel auxiliar");
+			console.log(auxiliar);
 			funBase.excluirAuxiliarMedico(auxiliar, usuario, res);
 		});
 
