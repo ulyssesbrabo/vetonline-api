@@ -346,7 +346,7 @@ var auth = require('../auth')
 		console.log("função Auxiliar Medicos");
 		console.log(usuario);
 		connection.acquire(function(err, con){
-			con.query("select Auxiliar.cpfAuxiliar, nomeAuxiliar, emailAuxiliar, telefoneAuxiliar from Auxiliar, Medico, Medico_Auxiliar where Medico_Auxiliar.Medico = Medico.idusuario and Auxiliar.idusuario = Medico_Auxiliar.Auxiliar and Medico.idusuario=?", [usuario.idusuario], function(err, result){
+			con.query("select Auxiliar.idusuario, Auxiliar.cpfAuxiliar, nomeAuxiliar, emailAuxiliar, telefoneAuxiliar from Auxiliar, Medico, Medico_Auxiliar where Medico_Auxiliar.Medico = Medico.idusuario and Auxiliar.idusuario = Medico_Auxiliar.Auxiliar and Medico.idusuario=?", [usuario.idusuario], function(err, result){
 				con.release();
 				res.status(200);
 				res.json(result);
@@ -357,7 +357,7 @@ var auth = require('../auth')
 	//Tela dos medicos: auxiliares cadastrados no mesmo estado dos medicos
 	function listarAuxiliaresCadastrados(usuario, res){
 		connection.acquire(function(err, con){
-			con.query("select nomeAuxiliar, telefoneAuxiliar, emailAuxiliar from Auxiliar, Medico where Auxiliar.Estado = Medico.Estado and Medico.idusuario = ?", [usuario.idusuario], function(err, result){
+			con.query("select Auxiliar.idusuario, nomeAuxiliar, telefoneAuxiliar, emailAuxiliar from Auxiliar, Medico where Auxiliar.Estado = Medico.Estado and Medico.idusuario = ?", [usuario.idusuario], function(err, result){
 				con.release();
 				res.json(result);
 			});
