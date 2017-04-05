@@ -47,7 +47,6 @@ module.exports = {
 			console.log("variavel usuario");
 			console.log(usuario);
 			var animalRes = req.body;
-			js.validate(animalRes, animalResSchema);
 			funBase.cadastroAnimalResp(animalRes, usuario, res);
 		});
 
@@ -164,12 +163,11 @@ module.exports = {
 			funBase.inserirHistoricoAnimal(animal, usuario, res);
 		});
 
-		app.put('/adicionarAnimal', auth.validate(), function(req, res){
+		app.post('/adicionarAnimal', auth.validate(), function(req, res){
 			var usuario = auth.validacaoUsuario();
 			console.log("variavel usuario");
 			console.log(usuario);
 			var animal = req.body;
-			js.validate(animal, adicionarAnimalMedicoSchema);
 			funBase.inserirAnimalMedico(animal, usuario, res);
 		});
 

@@ -438,7 +438,7 @@ var auth = require('../auth')
 	//Inserir Animal ao medicos apenas o médico
 	function inserirAnimalMedico(animal, usuario, res) {
 	    connection.acquire(function(err, con) {
-	      con.query("update Animal set Animal.Medico = ? where Animal.idAnimal = ?", [usuario.idusuario, animal.idAnimal], function(err, result) {
+	      con.query("insert into MedicoAnimal (Medico, Animal) values(?,?)", [usuario.idusuario, animal.idAnimal], function(err, result) {
 	        con.release();
 	        if (err) {
 	          res.send({status: 1, message: 'TODO update failed'});
@@ -509,7 +509,7 @@ var auth = require('../auth')
 	//listarAnimaisMedico
 	function listarAnimaisMedico (usuario, res){
 		connection.acquire(function(err, con){
-			con.query("select nomeAnimal, Especie.nomeEspecie, Raca.nomeRaca, Responsavel. nomeResponsavel, Responsavel.telefoneResponsavel from Animal, Especie, Raca, Responsavel, Medico where Animal.Especie = Especie.idEspecie and Animal.Raca = Raca.idRaca and Animal.Medico = Medico.idusuario and Animal.Responsavel = Responsavel.idusuario and Medico.idusuario = ?", [usuario.idusuario], function(err, result){
+			con.query("select Animal.idAnimal, Animal.nomeAnimal, Especie.nomeEspecie, Raca.nomeRaca, Responsavel.nomeResponsavel, Responsavel.telefoneResponsavel from Animal, Especie, Raca, EspecieRaca, Responsavel, Medico, MedicoAnimal where MedicoAnimal.Animal = Animal.idAnimal and Animal.Especie = EspecieRaca.Especie and EspecieRaca.Especie = Especie.idEspecie and Animal.Raca = EspecieRaca.Raca and EspecieRaca.Raca = Raca.idRaca and Animal.Responsavel = Responsavel.idusuario and Medico.idusuario = MedicoAnimal.Medico and Medico.idusuario = ?", [usuario.idusuario], function(err, result){
 				con.release();
 				res.json(result);
 			});
@@ -519,7 +519,7 @@ var auth = require('../auth')
 	//listarAnimaisCadastrados
 	function listarAnimaisCadastrados (usuario, res){
 		connection.acquire(function(err, con){
-			con.query("select nomeAnimal, Especie.nomeEspecie, Raca.nomeRaca, Responsavel.nomeResponsavel, Responsavel.telefoneResponsavel from Animal, Responsavel, Estados, Medico, Especie, Raca where Animal.Especie = Especie.idEspecie and Animal.Raca = Raca.idRaca and Animal.Responsavel = Responsavel.idusuario and Responsavel.Estado = Estados.idEstados and Medico.Estado = Estados.idEstados and Responsavel.Estado = Medico.Estado and Medico.idusuario = ?", [usuario.idusuario], function(err, result){
+			con.query("select idAnimal ,nomeAnimal, Especie.nomeEspecie, Raca.nomeRaca, Responsavel.nomeResponsavel, Responsavel.telefoneResponsavel from Animal, Responsavel, Estados, Medico, Especie, Raca where Animal.Especie = Especie.idEspecie and Animal.Raca = Raca.idRaca and Animal.Responsavel = Responsavel.idusuario and Responsavel.Estado = Estados.idEstados and Medico.Estado = Estados.idEstados and Responsavel.Estado = Medico.Estado and Medico.idusuario = ?", [usuario.idusuario], function(err, result){
 				con.release();
 				res.json(result);
 			});
