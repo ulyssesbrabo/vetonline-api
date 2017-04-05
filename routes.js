@@ -181,12 +181,12 @@ module.exports = {
 			funBase.inserirAnemia(animal, res);
 		});
 
-		app.delete('/excluirAuxiliar', auth.validate(), function(req,res, next){
+		app.delete('/excluirAuxiliar/:idusuario', auth.validate(), function(req,res){
 			var usuario = auth.validacaoUsuario();
 			console.log("variavel usuario");
 			console.log(usuario);
-			var auxiliar = req.body;
-			console.log("variavel auxiliar");
+			var auxiliar = req.params.idusuario;
+			console.log("Variavel Auxiliares");
 			console.log(auxiliar);
 			funBase.excluirAuxiliarMedico(auxiliar, usuario, res);
 		});
@@ -205,7 +205,7 @@ module.exports = {
 			funBase.perfilMedico(usuario, res);
 		});
 
-		app.get('/auxiliaresMedicos', function(req,res, next){  
+		app.get('/auxiliaresMedicos', auth.validate(), function(req,res, next){  
 			var usuario = auth.validacaoUsuario();
 			console.log("variavel usuario");
 			console.log(usuario);

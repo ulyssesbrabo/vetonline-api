@@ -220,12 +220,12 @@ var auth = require('../auth')
 	    });
 	};
 	//Excluir vinculo com auxiliar
-	function excluirAuxiliarMedico(usuario, auxiliar, res) {
+	function excluirAuxiliarMedico(auxiliar, usuario, res) {
 		console.log("Função Excluir Auxiliar")
 		console.log(usuario);
 		console.log(auxiliar);
 	    connection.acquire(function(err, con) {
-	      con.query("delete from Medico_Auxiliar where Medico_Auxiliar.Medico = ? and Medico_Auxiliar.Auxiliar = ?", [usuario.idusuario, auxiliar.idusuario], function(err, result) {
+	      con.query("delete from Medico_Auxiliar where Medico_Auxiliar.Medico = ? and Medico_Auxiliar.Auxiliar = ?", [usuario.idusuario, auxiliar], function(err, result) {
 	        con.release();
 	        if (err) {
 	          res.send({status: 1, message: 'Failed to delete'});
