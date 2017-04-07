@@ -620,22 +620,6 @@ var auth = require('../auth')
 		});
 	};
 
-	function autenticacaoClinica(usuario, res){
-		connection.acquire(function(err, con){
-			con.query("select Clinica.cnpj, Clinica.nomeClinica from Clinica where Clinica.cnpj = ? and Clinica.senhaClinca = ?", [usuario.username, usuario.password], function(err, result){
-				con.release();
-				if (result.length == 0) {
-					res.status(403);
-					return res.json("erro autenticação")
-				}
-				var token = auth.sign(result[0], 3)
-				res.json({
-					user:result[0],
-					token:token
-				});
-			});
-		});
-	};
 
 	function autenticacaoDoResponsavel(usuario, res){	
 		connection.acquire(function(err, con){
@@ -742,7 +726,6 @@ module.exports = {
 	 autenticacaoDoMedico : autenticacaoDoMedico,
 	 autenticacaoDoAuxiliar : autenticacaoDoAuxiliar,
 	 autenticacaoDoResponsavel : autenticacaoDoResponsavel,
-	 autenticacaoClinica : autenticacaoClinica,
 	 anemiaMacrociticaNormocromica : anemiaMacrociticaNormocromica,
 	 anemiaMacrociticaHipocromica : anemiaMacrociticaHipocromica,
 	 anemiaMicrociticoNormocromico : anemiaMicrociticoNormocromico,
