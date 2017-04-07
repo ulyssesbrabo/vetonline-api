@@ -203,6 +203,12 @@ module.exports = {
 			funBase.perfilMedico(usuario, res);
 		});
 
+		app.get('/verificaVinculoMedicoAuxiliar', auth.validate(), function(req,res, next){
+			var usuario = auth.validacaoUsuario();
+			var auxiliar = req.body;
+			funBase.verificaVinculoMedicoAuxiliar(auxiliar, usuario, res);
+		});
+
 		app.get('/auxiliaresMedicos', auth.validate(), function(req,res, next){  
 			var usuario = auth.validacaoUsuario();
 			console.log("variavel usuario");

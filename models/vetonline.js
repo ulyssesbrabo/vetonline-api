@@ -181,6 +181,11 @@ var auth = require('../auth')
 	};
 	//Inserir auxiliar ao médico na tablela auxiliar médico
 	function inserirAuxiliarMedico(auxiliar, usuario, res) {
+		console.log("Função inserir Auxiliar");
+		console.log("Variavel Auxiliar");
+		console.log(auxiliar);
+		console.log("Variavel usuario");
+		console.log(usuario);
     connection.acquire(function(err, con) {
       con.query( "insert into Medico_Auxiliar(Medico, Auxiliar) values(?,?)", [usuario.idusuario, auxiliar.idusuario], function(err, result) {
         con.release();
@@ -192,6 +197,14 @@ var auth = require('../auth')
 	    });
 	  });
 	};
+	function verificaVinculoMedicoAuxiliar(auxiliar, usuario, res){
+		connection.acquire(function(err, con){
+			con.query("select* from Medico_Auxiliar where Medico = ? and Auxiliar = ?", [usuario.idusuario, auxiliar.idusuario], function(err, result){
+		        con.release();
+		        res.json(result);
+			});
+		});
+	}
 	//Atualização de senha do médico
 	function atualizarSenhaMedico(medico, usuario, res) {
 	    connection.acquire(function(err, con) {
@@ -723,6 +736,7 @@ module.exports = {
 	 listaCidadeEstados : listaCidadeEstados,
 	 especies : especies,
 	 raca : raca,
+	 verificaVinculoMedicoAuxiliar : verificaVinculoMedicoAuxiliar,
 	 autenticacaoDoMedico : autenticacaoDoMedico,
 	 autenticacaoDoAuxiliar : autenticacaoDoAuxiliar,
 	 autenticacaoDoResponsavel : autenticacaoDoResponsavel,
