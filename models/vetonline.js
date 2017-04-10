@@ -373,7 +373,7 @@ var auth = require('../auth')
 	//Tela dos medicos: auxiliares cadastrados no mesmo estado dos medicos
 	function listarAuxiliaresCadastrados(usuario, res){
 		connection.acquire(function(err, con){
-			con.query("select Auxiliar.idusuario, nomeAuxiliar, telefoneAuxiliar, emailAuxiliar from Auxiliar, Medico where Auxiliar.Estado = Medico.Estado and Medico.idusuario = ?", [usuario.idusuario], function(err, result){
+			con.query("select Auxiliar.idusuario, nomeAuxiliar, telefoneAuxiliar, emailAuxiliar from Auxiliar, Medico where Auxiliar.Estado = Medico.Estado and Auxiliar.Cidade = Medico.Cidade and Medico.idusuario = ?", [usuario.idusuario], function(err, result){
 				con.release();
 				res.json(result);
 			});
