@@ -660,9 +660,9 @@ var auth = require('../auth')
 		});
 	};
 
-	function anemiaMacrociticaHipocromica(res){
+	function anemiaMacrociticaHipocromica(req, res){
 		connection.acquire(function(err, con){
-			con.query("select tipoAnemia, descricaoAnemia from Anemia where idAnemia = 2", function(err, result){
+			con.query("select Anemia.idAnemia, Anemia.tipoAnemia, Anemia.descricaoAnemia from Anemia where idAnemia = 2", function(err, result){
 				con.release();
 				res.json(result);
 			});
