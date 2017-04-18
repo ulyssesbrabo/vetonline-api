@@ -650,10 +650,10 @@ var auth = require('../auth')
 			});
 		});
 	};
-
-	function anemiaMacrociticaNormocromica(res){
+///////////////////////////////////////////////////Anemias/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	function anemiaMacrociticaNormocromica(req, res){
 		connection.acquire(function(err, con){
-			con.query("select tipoAnemia, descricaoAnemia from Anemia where idAnemia = 1", function(err, result){
+			con.query("select Anemia.idAnemia, Anemia.tipoAnemia, Anemia.descricaoAnemia from Anemia where idAnemia = 1", function(err, result){
 				con.release();
 				res.json(result);
 			});
@@ -669,18 +669,72 @@ var auth = require('../auth')
 		});
 	};
 
-	function anemiaMicrociticoNormocromico(res){
+	function anemiaMicrociticoNormocromico(req, res){
 		connection.acquire(function(err, con){
-			con.query("select tipoAnemia, descricaoAnemia from Anemia where idAnemia = 3", function(err, result){
+			con.query("select Anemia.idAnemia, Anemia.tipoAnemia, Anemia.descricaoAnemia from Anemia where idAnemia = 4", function(err, result){
 				con.release();
 				res.json(result);
 			});
 		});
 	};
 
-	function anemiaMicrociticoHipocromico(res){
+	function anemiaMicrociticoHipocromico(req, res){
 		connection.acquire(function(err, con){
-			con.query("select tipoAnemia, descricaoAnemia from Anemia where idAnemia = 4", function(err, result){
+			con.query("select Anemia.idAnemia, Anemia.tipoAnemia, Anemia.descricaoAnemia from Anemia where idAnemia = 5", function(err, result){
+				con.release();
+				res.json(result);
+			});
+		});
+	};
+
+	function leucocitosLeucopenia(req, res){
+		connection.acquire(function(err, con){
+			con.query("select idleucocitos, tipoleucocitos, doencaleucocito from Leucocitos where idleucocitos = 2", function(err, result){
+				con.release();
+				res.json(result);
+			});
+		});
+	};
+
+	function leucocitosLeucocitose(req, res){
+		connection.acquire(function(err, con){
+			con.query("select idleucocitos, tipoleucocitos, doencaleucocito from Leucocitos where idleucocitos = 1", function(err, result){
+				con.release();
+				res.json(result);
+			});
+		});
+	};
+
+	function leucocitosEosinopenia(req, res){
+		connection.acquire(function(err, con){
+			con.query("", function(err, result){
+				con.release();
+				res.json(result);
+			});
+		});
+	};
+
+	function leucocitosEosinofilia(req, res){
+		connection.acquire(function(err, con){
+			con.query("select idleucocitos, tipoleucocitos, doencaleucocito from Leucocitos where idleucocitos = 5", function(err, result){
+				con.release();
+				res.json(result);
+			});
+		});
+	};
+
+	function leucocitosLinfocitopenia(req, res){
+		connection.acquire(function(err, con){
+			con.query("select idleucocitos, tipoleucocitos, doencaleucocito from Leucocitos where idleucocitos = 4", function(err, result){
+				con.release();
+				res.json(result);
+			});
+		});
+	};
+
+	function leucocitosLinfocitose(req, res){
+		connection.acquire(function(err, con){
+			con.query("select idleucocitos, tipoleucocitos, doencaleucocito from Leucocitos where idleucocitos = 3", function(err, result){
 				con.release();
 				res.json(result);
 			});
@@ -744,6 +798,12 @@ module.exports = {
 	 anemiaMacrociticaHipocromica : anemiaMacrociticaHipocromica,
 	 anemiaMicrociticoNormocromico : anemiaMicrociticoNormocromico,
 	 anemiaMicrociticoHipocromico : anemiaMicrociticoHipocromico,
+	 leucocitosLeucopenia : leucocitosLeucopenia,
+	 leucocitosLeucocitose : leucocitosLeucocitose,
+	 leucocitosEosinopenia: leucocitosEosinopenia,
+	 leucocitosEosinofilia : leucocitosEosinofilia,
+	 leucocitosLinfocitopenia : leucocitosLinfocitopenia,
+	 leucocitosLinfocitose : leucocitosLinfocitose,
 	 getusuario : getusuario
 };
 

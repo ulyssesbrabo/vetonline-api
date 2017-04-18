@@ -310,9 +310,9 @@ module.exports = {
 			js.validate(clinica, clinicaSchema);
 			funBase.cadastraClinica(clinica, res);
 		});
-//////////////////////////Consultas Extras//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////Anemias//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		
-		app.get('/anemiaMacrocitica', function(req,res){  
+		app.get('/anemiaMacrociticaNormocromica', function(req,res){  
 			funBase.anemiaMacrociticaNormocromica(req, res);
 		});
 
@@ -320,13 +320,38 @@ module.exports = {
 			funBase.anemiaMacrociticaHipocromica(req, res);
 		});
 
-		app.get('/anemiaMicrocitico', function(req,res){  
+		app.get('/anemiaMicrociticoNormocromico', function(req,res){  
 			funBase.anemiaMicrociticoNormocromico(req, res);
 		});
 
 		app.get('/anemiaMicrociticoHipocromico', function(req,res){  
 			funBase.anemiaMicrociticoHipocromico(req, res);
 		});
+//////////////////////////Leucocitos//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		app.get('/leucocitosLeucopenia',function(req, res){
+			funBase.leucocitosLeucopenia(req, res);
+		});
+
+		app.get('/leucocitosLeucocitose',function(req, res){
+			funBase.leucocitosLeucocitose(req, res);
+		});
+
+		app.get('/leucocitosEosinopenia',function(req, res){
+			funBase.leucocitosEosinopenia(req, res);
+		});
+
+		app.get('/leucocitosEosinofilia',function(req, res){
+			funBase.leucocitosEosinofilia(req, res);
+		});
+
+		app.get('/leucocitosLinfocitopenia',function(req, res){
+			funBase.leucocitosLinfocitopenia(req, res);
+		});
+
+		app.get('/leucocitosLinfocitose',function(req, res){
+			funBase.leucocitosLinfocitose(req, res);
+		});
+//////////////////////////Consultas extras/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 		app.get('/selecionarEspecie', function(req, res){
 			funBase.especies(req, res);
