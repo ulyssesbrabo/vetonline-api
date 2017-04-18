@@ -189,6 +189,12 @@ module.exports = {
 			funBase.excluirAuxiliarMedico(auxiliar, usuario, res);
 		});
 
+		app.delete('/excluirAnimal/:idAnimal', auth.validate(), function(req, res){
+			var usuario = auth.validacaoUsuario();
+			var animal = req.params.idAnimal;
+			funBase.excluirAnimalMedico(animal, usuario, res);
+		});
+
 		app.delete('/deletarMedico', auth.validate(), function(req,res, next){
 			var usuario = auth.validacaoUsuario();
 			console.log("variavel usuario");

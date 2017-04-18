@@ -197,6 +197,7 @@ var auth = require('../auth')
 	    });
 	  });
 	};
+
 	function verificaVinculoMedicoAuxiliar(auxiliar, usuario, res){
 		connection.acquire(function(err, con){
 			con.query("select* from Medico_Auxiliar where Medico = ? and Auxiliar = ?", [usuario.idusuario, auxiliar.idusuario], function(err, result){
@@ -247,6 +248,19 @@ var auth = require('../auth')
 	        }
 	      });
 	    });
+	};
+	//Excluir vinculo com o animal
+	function excluirAnimalMedico(animal, usuario, res){
+		connection.acquire(function(err, con){
+			con.query("delete from MedicoAnimal where MedicoAnimal.Medico = ? and MedicoAnimal.Animal = ?",[usuario.idusuario, animal.idAnimal],function(err, result){
+				con.release();
+		        if (err) {
+		          res.send({status: 1, message: 'Failed to delete'});
+		        } else {
+		          res.send({status: 0, message: 'Deleted successfully'});
+		        }
+			});
+		});
 	};
 	//Consultas
 	//Tela dos Auxiliares: medicos que os auxiliares prestam serviços
@@ -451,7 +465,7 @@ var auth = require('../auth')
 	//Inserir Animal ao medicos apenas o médico
 	function inserirAnimalMedico(animal, usuario, res) {
 	    connection.acquire(function(err, con) {
-	      con.query("insert into MedicoAnimal (Medico, Animal) values(?,?)", [usuario.idusuario, animal.idAnimal], function(err, result) {
+	      con.query("insert into MedicoAnimal(Medico, Animal) values(?,?)", [usuario.idusuario, animal.idAnimal], function(err, result) {
 	        con.release();
 	        if (err) {
 	          res.send({status: 1, message: 'TODO update failed'});
@@ -779,6 +793,7 @@ module.exports = {
 	 cadastraAnimalAuxiliar : cadastraAnimalAuxiliar,
 	 inserirHistoricoAnimal :  inserirHistoricoAnimal,
 	 inserirAnimalMedico :  inserirAnimalMedico,
+	 excluirAnimalMedico : excluirAnimalMedico,
 	 inserirAnemia :  inserirAnemia,
 	 deletarAnimalDoResponsavel :  deletarAnimalDoResponsavel,
 	 listarAnimaisDosMedicosAuxiliares :  listarAnimaisDosMedicosAuxiliares,
