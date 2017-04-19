@@ -168,6 +168,7 @@ module.exports = {
 			console.log("variavel usuario");
 			console.log(usuario);
 			var animal = req.body;
+			console.log(animal);
 			funBase.inserirAnimalMedico(animal, usuario, res);
 		});
 
@@ -228,6 +229,11 @@ module.exports = {
 			console.log(usuario);
 			funBase.listarAuxiliaresCadastrados(usuario, res);
 		});
+
+		app.get('/listarAnimaisAnemia', auth.validate(), function(req, res, next){
+			var usuario = auth.validacaoUsuario();
+			funBase.listarAnimaisAnemia(usuario, res);
+		})
 
 		app.get('/animaisMedico', auth.validate(), function(req,res, next){  
 			var usuario = auth.validacaoUsuario();
