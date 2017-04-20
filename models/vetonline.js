@@ -187,7 +187,7 @@ var auth = require('../auth')
 		console.log("Variavel usuario");
 		console.log(usuario);
     connection.acquire(function(err, con) {
-      con.query( "insert into Medico_Auxiliar(Medico, Auxiliar) values(?,?)", [usuario.idusuario, auxiliar.idusuario], function(err, result) {
+      con.query( "insert into Medico_Auxiliar(Medico_Auxiliar.Medico, Medico_Auxiliar.Auxiliar, Medico_Auxiliar.status) values(?,?,1)", [usuario.idusuario, auxiliar.idusuario], function(err, result) {
         con.release();
 	        if (err) {
 	          res.send({status: 1, message: 'TODO creation failed'});
@@ -220,23 +220,10 @@ var auth = require('../auth')
 	    });
 	};
 	//Exclusões
-	//Excluir cadastro médico
-	function excluirMedicoCompleto(usuario, res) {
-	    connection.acquire(function(err, con) {
-	      con.query("delete from Medico, Medico_Auxiliar, MedicoAnimal using Medico inner join Medico_Auxiliar, MedicoAnimal where Medico.idusuario = Medico_Auxiliar.Medico and Medico.idusuario = MedicoAnimal.Medico and Medico.idusuario = ?", [usuario.idusuario], function(err, result) {
-	        con.release();
-	        if (err) {
-	          res.send({status: 1, message: 'Failed to delete'});
-	        } else {
-	          res.send({status: 0, message: 'Deleted successfully'});
-	        }
-	      });
-	    });
-	};
 	//Excluir Apenas Médico
 	function excluirMedico(usuario, res){
 		connection.acquire(function(err, con){
-			con.query("delete from Medico where Medico.idusuario = ?", [usuario.idusuario], function(err, result){
+			con.query("update Medico set Medico.status=2  where Medico.idusuario=?", [usuario.idusuario], function(err, result){
 				con.release();
 				con.release();
 		        if (err) {
@@ -253,7 +240,7 @@ var auth = require('../auth')
 		console.log(usuario);
 		console.log(auxiliar);
 	    connection.acquire(function(err, con) {
-	      con.query("delete from Medico_Auxiliar where Medico_Auxiliar.Medico = ? and Medico_Auxiliar.Auxiliar = ?", [usuario.idusuario, auxiliar], function(err, result) {
+	      con.query("update Medico_Auxiliar set Medico_Auxiliar.status=2  where Medico_Auxiliar.Medico=?", [usuario.idusuario, auxiliar], function(err, result) {
 	        con.release();
 	        if (err) {
 	          res.send({status: 1, message: 'Failed to delete'});
@@ -269,7 +256,7 @@ var auth = require('../auth')
 		console.log(animal);
 		console.log(usuario);
 		connection.acquire(function(err, con){
-			con.query("delete from MedicoAnimal where MedicoAnimal.Medico = ? and MedicoAnimal.Animal = ?",[usuario.idusuario, animal],function(err, result){
+			con.query("update MedicoAnimal set MedicoAnimal.status=2 where MedicoAnimal.Medico=? and MedicoAnimal.Animal=?",[usuario.idusuario, animal],function(err, result){
 				con.release();
 		        if (err) {
 		          res.send({status: 1, message: 'Failed to delete'});
@@ -280,6 +267,15 @@ var auth = require('../auth')
 		});
 	};
 	//Consultas
+	//Nome do Médico
+	function nomeMedico(usuario, res){
+		connection.acquire(function(err, con){
+			con.query("select Medico.nomeMedico from Medico where Medico.idusuario=?",[usuario.idusuario], function(err, result){
+				con.release();
+				res.json(result);
+			})
+		})
+	}
 	//Tela dos Auxiliares: medicos que os auxiliares prestam serviços
 	function listarMedicosDosAuxiliares(usuario, res){
 		connection.acquire(function(err, con){
@@ -393,7 +389,7 @@ var auth = require('../auth')
 		console.log("função Auxiliar Medicos");
 		console.log(usuario);
 		connection.acquire(function(err, con){
-			con.query("select Auxiliar.idusuario, Auxiliar.cpfAuxiliar, nomeAuxiliar, emailAuxiliar, telefoneAuxiliar from Auxiliar, Medico, Medico_Auxiliar where Medico_Auxiliar.Medico = Medico.idusuario and Auxiliar.idusuario = Medico_Auxiliar.Auxiliar and Medico.idusuario=?", [usuario.idusuario], function(err, result){
+			con.query("select Auxiliar.idusuario, Auxiliar.cpfAuxiliar, nomeAuxiliar, emailAuxiliar, telefoneAuxiliar from Auxiliar, Medico, Medico_Auxiliar where Medico_Auxiliar.Medico = Medico.idusuario and Auxiliar.idusuario = Medico_Auxiliar.Auxiliar and Medico_Auxiliar.status=1 and Medico.idusuario=?", [usuario.idusuario], function(err, result){
 				con.release();
 				res.status(200);
 				res.json(result);
@@ -404,7 +400,7 @@ var auth = require('../auth')
 	//Tela dos medicos: auxiliares cadastrados no mesmo estado dos medicos
 	function listarAuxiliaresCadastrados(usuario, res){
 		connection.acquire(function(err, con){
-			con.query("select Auxiliar.idusuario, nomeAuxiliar, telefoneAuxiliar, emailAuxiliar from Auxiliar, Medico where Auxiliar.Estado = Medico.Estado and Auxiliar.Cidade = Medico.Cidade and Medico.idusuario = ?", [usuario.idusuario], function(err, result){
+			con.query("select Auxiliar.idusuario, nomeAuxiliar, telefoneAuxiliar, emailAuxiliar from Auxiliar, Medico where Auxiliar.Estado = Medico.Estado and Auxiliar.Cidade = Medico.Cidade and Auxiliar.status=1 and Medico.idusuario = ?", [usuario.idusuario], function(err, result){
 				con.release();
 				res.json(result);
 			});
@@ -485,7 +481,7 @@ var auth = require('../auth')
 		console.log(usuario.idusuario);
 		console.log(animal.idAnimal);
 	    connection.acquire(function(err, con) {
-	      con.query("insert into MedicoAnimal(MedicoAnimal.Medico, MedicoAnimal.Animal) values(?,?)", [usuario.idusuario, animal.idAnimal], function(err, result) {
+	      con.query("insert into MedicoAnimal(MedicoAnimal.Medico, MedicoAnimal.Animal, MedicoAnimal.status) values(?,?,1)", [usuario.idusuario, animal.idAnimal], function(err, result) {
 	        con.release();
 	        if (err) {
 	          res.send({status: 1, message: 'TODO update failed'});
@@ -556,7 +552,7 @@ var auth = require('../auth')
 	//listarAnimaisAnemia
 	function listarAnimaisAnemia(usuario, res){
 		connection.acquire(function(err, con){
-			con.query("select idEspecie, nomeAnimal from Animal, MedicoAnimal, Medico, Especie, EspecieRaca, Raca where Animal.Especie = EspecieRaca.Especie and EspecieRaca.Especie = Especie.idEspecie and Medico.idusuario = MedicoAnimal.Medico and MedicoAnimal.Animal = Animal.idAnimal and Animal.Raca = EspecieRaca.Raca and EspecieRaca.Raca = Raca.idRaca and Medico.idusuario = ?",[usuario.idusuario], function(err, result){
+			con.query("select idEspecie, nomeAnimal from Animal, MedicoAnimal, Medico, Especie, EspecieRaca, Raca, Responsavel where Animal.Especie = EspecieRaca.Especie and EspecieRaca.Especie = Especie.idEspecie and Medico.idusuario = MedicoAnimal.Medico and MedicoAnimal.Animal = Animal.idAnimal and Animal.Raca = EspecieRaca.Raca and EspecieRaca.Raca = Raca.idRaca and Animal.Responsavel = Responsavel.idusuario and Responsavel.status = 1 and MedicoAnimal.status=1 and MedicoAnimal.Medico = ?",[usuario.idusuario], function(err, result){
 				con.release();
 				res.json(result);
 			});
@@ -566,7 +562,7 @@ var auth = require('../auth')
 	//listarAnimaisMedico
 	function listarAnimaisMedico (usuario, res){
 		connection.acquire(function(err, con){
-			con.query("select Animal.idAnimal, Animal.nomeAnimal, Especie.nomeEspecie, Raca.nomeRaca, Responsavel.nomeResponsavel, Responsavel.telefoneResponsavel from Animal, Especie, Raca, EspecieRaca, Responsavel, Medico, MedicoAnimal where MedicoAnimal.Animal = Animal.idAnimal and Animal.Especie = EspecieRaca.Especie and EspecieRaca.Especie = Especie.idEspecie and Animal.Raca = EspecieRaca.Raca and EspecieRaca.Raca = Raca.idRaca and Animal.Responsavel = Responsavel.idusuario and Medico.idusuario = MedicoAnimal.Medico and Medico.idusuario = ?", [usuario.idusuario], function(err, result){
+			con.query("select Animal.idAnimal, Animal.nomeAnimal, Especie.nomeEspecie, Raca.nomeRaca, Responsavel.nomeResponsavel, Responsavel.telefoneResponsavel from Animal, Especie, Raca, EspecieRaca, Responsavel, Medico, MedicoAnimal where MedicoAnimal.Animal = Animal.idAnimal and Animal.Especie = EspecieRaca.Especie and EspecieRaca.Especie = Especie.idEspecie and Animal.Raca = EspecieRaca.Raca and EspecieRaca.Raca = Raca.idRaca and Animal.Responsavel = Responsavel.idusuario and Medico.idusuario = MedicoAnimal.Medico and MedicoAnimal.status=1 and Medico.idusuario = ?", [usuario.idusuario], function(err, result){
 				con.release();
 				res.json(result);
 			});
@@ -641,7 +637,7 @@ var auth = require('../auth')
 
 	function autenticacaoDoMedico(usuario, res, rows){
 		connection.acquire(function(err, con){
-			con.query("select Medico.idusuario from Medico where Medico.crmv = ? and Medico.senhaMedico = ?", [usuario.username, usuario.password], function(err, result, rows){
+			con.query("select Medico.idusuario from Medico where Medico.status = 1 and Medico.crmv = ? and Medico.senhaMedico = ?", [usuario.username, usuario.password], function(err, result, rows){
 				con.release();
 				if (result.length == 0) {
 					res.status(403);
@@ -662,7 +658,7 @@ var auth = require('../auth')
 
 	function autenticacaoDoAuxiliar(usuario, res){
 		connection.acquire(function(err, con){
-			con.query("select Auxiliar.idusuario from Auxiliar where Auxiliar.cpfAuxiliar = ? and Auxiliar.senhaAuxiliar = ?", [usuario.username, usuario.password], function(err, result){
+			con.query("select Auxiliar.idusuario from Auxiliar where Auxiliar.status = 1 and Auxiliar.cpfAuxiliar = ? and Auxiliar.senhaAuxiliar = ?", [usuario.username, usuario.password], function(err, result){
 				con.release();
 				if (result.length == 0) {
 					res.status(403);
@@ -680,7 +676,7 @@ var auth = require('../auth')
 
 	function autenticacaoDoResponsavel(usuario, res){	
 		connection.acquire(function(err, con){
-			con.query("select Responsavel.idusuario from Responsavel where cpfResponsavel = ? and senhaResponsavel = ?", [usuario.username, usuario.password], function(err, result){
+			con.query("select Responsavel.idusuario from Responsavel where Responsavel.status = 1 and cpfResponsavel = ? and senhaResponsavel = ?", [usuario.username, usuario.password], function(err, result){
 				con.release();
 				if (result.length == 0) {
 					res.status(403);
@@ -806,7 +802,6 @@ module.exports = {
 	 inserirAuxiliarMedico :  inserirAuxiliarMedico,
 	 atualizarSenhaMedico :  atualizarSenhaMedico,
 	 excluirMedico : excluirMedico,
-	 excluirMedicoCompleto :  excluirMedicoCompleto,
 	 excluirAuxiliarMedico :  excluirAuxiliarMedico,
 	 listarMedicosDosAuxiliares :  listarMedicosDosAuxiliares,
 	 perfilMedico :  perfilMedico,
@@ -837,6 +832,7 @@ module.exports = {
 	 listarAnimaisAnemia : listarAnimaisAnemia,
 	 especies : especies,
 	 raca : raca,
+	 nomeMedico : nomeMedico,
 	 verificaVinculoMedicoAuxiliar : verificaVinculoMedicoAuxiliar,
 	 autenticacaoDoMedico : autenticacaoDoMedico,
 	 autenticacaoDoAuxiliar : autenticacaoDoAuxiliar,

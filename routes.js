@@ -150,7 +150,6 @@ module.exports = {
 			console.log("variavel usuario");
 			console.log(usuario);
 			var medico = req.body;
-			js.validate(medico, atualSenhaMedicoSchema);
 			funBase.atualizarSenhaMedico(medico, usuario, res);
 		});
 
@@ -180,7 +179,7 @@ module.exports = {
 			funBase.inserirAnemia(animal, res);
 		});
 
-		app.delete('/excluirAuxiliar/:idusuario', auth.validate(), function(req,res){
+		app.put('/excluirAuxiliar/:idusuario', auth.validate(), function(req,res){
 			var usuario = auth.validacaoUsuario();
 			console.log("variavel usuario");
 			console.log(usuario);
@@ -190,23 +189,24 @@ module.exports = {
 			funBase.excluirAuxiliarMedico(auxiliar, usuario, res);
 		});
 
-		app.delete('/excluirAnimal/:idAnimal', auth.validate(), function(req, res){
+		app.put('/excluirAnimal/:idAnimal', auth.validate(), function(req, res){
 			var usuario = auth.validacaoUsuario();
 			var animal = req.params.idAnimal;
+			console.log("excluirAnimal")
+			console.log(usuario);
+			console.log(animal);
 			funBase.excluirAnimalMedico(animal, usuario, res);
 		});
 
-		app.delete('/deletarMedicoCompleto', auth.validate(), function(req,res, next){
-			var usuario = auth.validacaoUsuario();
-			console.log("variavel usuario");
-			console.log(usuario);
-			funBase.excluirMedicoCompleto(usuario, res);
-		});
-
-		app.delete('/deletarMedico', auth.validate(), function(req, res, next){
+		app.put('/deletarMedico', auth.validate(), function(req, res, next){
 			var usuario = auth.validacaoUsuario();
 			funBase.excluirMedico(usuario, res);
 		});
+
+		app.get('/nomeMedico', auth.validate(), function(req, res, next){
+			var usuario = auth.validacaoUsuario();
+			funBase.nomeMedico(usuario, res);
+		})
 
 		app.get('/perfilMedico', auth.validate(), function(req,res, next){  
 			var usuario = auth.validacaoUsuario();
