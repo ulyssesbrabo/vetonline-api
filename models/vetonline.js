@@ -221,9 +221,9 @@ var auth = require('../auth')
 	};
 	//Exclusões
 	//Excluir cadastro médico
-	function excluirMedico(usuario, res) {
+	function excluirMedicoCompleto(usuario, res) {
 	    connection.acquire(function(err, con) {
-	      con.query("delete from Medico, Medico_Auxiliar using Medico inner join Medico_Auxiliar where Medico.idusuario = Medico_Auxiliar.Medico and Medico.idusuario = ?", [usuario.idusuario], function(err, result) {
+	      con.query("delete from Medico, Medico_Auxiliar, MedicoAnimal using Medico inner join Medico_Auxiliar, MedicoAnimal where Medico.idusuario = Medico_Auxiliar.Medico and Medico.idusuario = MedicoAnimal.Medico and Medico.idusuario = ?", [usuario.idusuario], function(err, result) {
 	        con.release();
 	        if (err) {
 	          res.send({status: 1, message: 'Failed to delete'});
@@ -232,6 +232,20 @@ var auth = require('../auth')
 	        }
 	      });
 	    });
+	};
+	//Excluir Apenas Médico
+	function excluirMedico(usuario, res){
+		connection.acquire(function(err, con){
+			con.query("delete from Medico where Medico.idusuario = ?", [usuario.idusuario], function(err, result){
+				con.release();
+				con.release();
+		        if (err) {
+		          res.send({status: 1, message: 'Failed to delete'});
+		        } else {
+		          res.send({status: 0, message: 'Deleted successfully'});
+		        }
+			});
+		});
 	};
 	//Excluir vinculo com auxiliar
 	function excluirAuxiliarMedico(auxiliar, usuario, res) {
@@ -791,7 +805,8 @@ module.exports = {
 	 atualizarMedico :  atualizarMedico,
 	 inserirAuxiliarMedico :  inserirAuxiliarMedico,
 	 atualizarSenhaMedico :  atualizarSenhaMedico,
-	 excluirMedico :  excluirMedico,
+	 excluirMedico : excluirMedico,
+	 excluirMedicoCompleto :  excluirMedicoCompleto,
 	 excluirAuxiliarMedico :  excluirAuxiliarMedico,
 	 listarMedicosDosAuxiliares :  listarMedicosDosAuxiliares,
 	 perfilMedico :  perfilMedico,
