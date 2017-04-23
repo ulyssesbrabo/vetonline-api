@@ -240,7 +240,7 @@ var auth = require('../auth')
 		console.log(usuario);
 		console.log(auxiliar);
 	    connection.acquire(function(err, con) {
-	      con.query("update Medico_Auxiliar set Medico_Auxiliar.status=2  where Medico_Auxiliar.Medico=?", [usuario.idusuario, auxiliar], function(err, result) {
+	      con.query("update Medico_Auxiliar set Medico_Auxiliar.status=2  where Medico_Auxiliar.Medico=? and Medico_Auxiliar.Auxiliar=?", [usuario.idusuario, auxiliar], function(err, result) {
 	        con.release();
 	        if (err) {
 	          res.send({status: 1, message: 'Failed to delete'});
