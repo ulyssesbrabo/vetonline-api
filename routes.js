@@ -198,9 +198,13 @@ module.exports = {
 			funBase.excluirAnimalMedico(animal, usuario, res);
 		});
 
-		app.put('/deletarMedico', auth.validate(), function(req, res, next){
+		app.put('/deletarMedico/:statu', auth.validate(), function(req, res, next){
 			var usuario = auth.validacaoUsuario();
-			funBase.excluirMedico(usuario, res);
+			var statu = req.params.statu;
+			console.log("Função Excluir Medico");
+			console.log(usuario);
+			console.log(statu);
+			funBase.excluirMedico(usuario, statu, res);
 		});
 
 		app.get('/nomeMedico', auth.validate(), function(req, res, next){

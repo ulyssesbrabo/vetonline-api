@@ -221,10 +221,12 @@ var auth = require('../auth')
 	};
 	//Exclusões
 	//Excluir Apenas Médico
-	function excluirMedico(usuario, res){
+	function excluirMedico(usuario, statu, res){
+		console.log("Função excluir");
+		console.log(usuario);
+		console.log(statu);
 		connection.acquire(function(err, con){
-			con.query("update Medico set Medico.status=2  where Medico.idusuario=?", [usuario.idusuario], function(err, result){
-				con.release();
+			con.query("update Medico set Medico.status=? where Medico.idusuario=?", [statu, usuario], function(err, result){
 				con.release();
 		        if (err) {
 		          res.send({status: 1, message: 'Failed to delete'});
