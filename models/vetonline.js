@@ -711,6 +711,15 @@ var auth = require('../auth')
 		});
 	};
 
+	function anemiaNormociticaNormocromico(req, res){
+		connection.acquire(function(err, con){
+			con.query("select Anemia.idAnemia, Anemia.tipoAnemia, Anemia.descricaoAnemia from Anemia where idAnemia = 3", function(err, result){
+				con.release();
+				res.json(result);
+			});
+		});
+	};
+
 	function anemiaMicrociticoNormocromico(req, res){
 		connection.acquire(function(err, con){
 			con.query("select Anemia.idAnemia, Anemia.tipoAnemia, Anemia.descricaoAnemia from Anemia where idAnemia = 4", function(err, result){
@@ -729,6 +738,23 @@ var auth = require('../auth')
 		});
 	};
 
+	function animalSemAnemia(req, res){
+		connection.acquire(function(err, con){
+			con.query("select Anemia.idAnemia, Anemia.tipoAnemia, Anemia.descricaoAnemia from Anemia where idAnemia = 6", function(err, result){
+				con.release();
+				res.json(result);
+			});
+		});
+	};
+///////////////////////////////////////////////////Leucocitos///////////////////////////////////////////////////////////////////////////////
+	function leucocitosLeucocitose(req, res){
+		connection.acquire(function(err, con){
+			con.query("select idleucocitos, tipoleucocitos, doencaleucocito from Leucocitos where idleucocitos = 1", function(err, result){
+				con.release();
+				res.json(result);
+			});
+		});
+	};
 	function leucocitosLeucopenia(req, res){
 		connection.acquire(function(err, con){
 			con.query("select idleucocitos, tipoleucocitos, doencaleucocito from Leucocitos where idleucocitos = 2", function(err, result){
@@ -738,27 +764,9 @@ var auth = require('../auth')
 		});
 	};
 
-	function leucocitosLeucocitose(req, res){
+	function leucocitosLinfocitose(req, res){
 		connection.acquire(function(err, con){
-			con.query("select idleucocitos, tipoleucocitos, doencaleucocito from Leucocitos where idleucocitos = 1", function(err, result){
-				con.release();
-				res.json(result);
-			});
-		});
-	};
-
-	function leucocitosEosinopenia(req, res){
-		connection.acquire(function(err, con){
-			con.query("", function(err, result){
-				con.release();
-				res.json(result);
-			});
-		});
-	};
-
-	function leucocitosEosinofilia(req, res){
-		connection.acquire(function(err, con){
-			con.query("select idleucocitos, tipoleucocitos, doencaleucocito from Leucocitos where idleucocitos = 5", function(err, result){
+			con.query("select idleucocitos, tipoleucocitos, doencaleucocito from Leucocitos where idleucocitos = 3", function(err, result){
 				con.release();
 				res.json(result);
 			});
@@ -774,14 +782,42 @@ var auth = require('../auth')
 		});
 	};
 
-	function leucocitosLinfocitose(req, res){
+	function leucocitosEosinofilia(req, res){
 		connection.acquire(function(err, con){
-			con.query("select idleucocitos, tipoleucocitos, doencaleucocito from Leucocitos where idleucocitos = 3", function(err, result){
+			con.query("select idleucocitos, tipoleucocitos, doencaleucocito from Leucocitos where idleucocitos = 5", function(err, result){
 				con.release();
 				res.json(result);
 			});
 		});
 	};
+
+	function leucocitosEosinopenia(req, res){
+		connection.acquire(function(err, con){
+			con.query("select idleucocitos, tipoleucocitos, doencaleucocito from Leucocitos where idleucocitos = 6", function(err, result){
+				con.release();
+				res.json(result);
+			});
+		});
+	};
+
+	function leucocitosMonocitose(req, res){
+		connection.acquire(function(err, con){
+			con.query("select idleucocitos, tipoleucocitos, doencaleucocito from Leucocitos where idleucocitos = 7", function(err, result){
+				con.release();
+				res.json(result);
+			});
+		});
+	};
+
+	function leucocitosBasofilia(req, res){
+		connection.acquire(function(err, con){
+			con.query("select idleucocitos, tipoleucocitos, doencaleucocito from Leucocitos where idleucocitos = 8", function(err, result){
+				con.release();
+				res.json(result);
+			});
+		});
+	};
+	
 
 
 
@@ -841,14 +877,18 @@ module.exports = {
 	 autenticacaoDoResponsavel : autenticacaoDoResponsavel,
 	 anemiaMacrociticaNormocromica : anemiaMacrociticaNormocromica,
 	 anemiaMacrociticaHipocromica : anemiaMacrociticaHipocromica,
+	 anemiaNormociticaNormocromico : anemiaNormociticaNormocromico,
 	 anemiaMicrociticoNormocromico : anemiaMicrociticoNormocromico,
 	 anemiaMicrociticoHipocromico : anemiaMicrociticoHipocromico,
+	 animalSemAnemia : animalSemAnemia,
 	 leucocitosLeucopenia : leucocitosLeucopenia,
 	 leucocitosLeucocitose : leucocitosLeucocitose,
 	 leucocitosEosinopenia: leucocitosEosinopenia,
 	 leucocitosEosinofilia : leucocitosEosinofilia,
 	 leucocitosLinfocitopenia : leucocitosLinfocitopenia,
 	 leucocitosLinfocitose : leucocitosLinfocitose,
+	 leucocitosMonocitose : leucocitosMonocitose,
+	 leucocitosBasofilia : leucocitosBasofilia,
 	 getusuario : getusuario
 };
 

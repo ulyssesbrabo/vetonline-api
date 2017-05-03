@@ -341,6 +341,10 @@ module.exports = {
 			funBase.anemiaMacrociticaHipocromica(req, res);
 		});
 
+		app.get('/anemiaNormociticaNormocromico', function(req, res){
+			funBase.anemiaNormociticaNormocromico(req, res);
+		});
+
 		app.get('/anemiaMicrociticoNormocromico', function(req,res){  
 			funBase.anemiaMicrociticoNormocromico(req, res);
 		});
@@ -348,6 +352,10 @@ module.exports = {
 		app.get('/anemiaMicrociticoHipocromico', function(req,res){  
 			funBase.anemiaMicrociticoHipocromico(req, res);
 		});
+
+		app.get('/animalSemAnemia', function(req, res){
+			funBase.animalSemAnemia(req, res);
+		})
 //////////////////////////Leucocitos//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		app.get('/leucocitosLeucopenia',function(req, res){
 			funBase.leucocitosLeucopenia(req, res);
@@ -371,6 +379,12 @@ module.exports = {
 
 		app.get('/leucocitosLinfocitose',function(req, res){
 			funBase.leucocitosLinfocitose(req, res);
+		});
+		app.get('/leucocitosMonocitose', function(req, res){
+			funBase.leucocitosMonocitose(req, res);
+		});
+		app.get('/leucocitosBasofilia', function(req, res){
+			funBase.leucocitosBasofilia(req, res);
 		});
 //////////////////////////Consultas extras/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
