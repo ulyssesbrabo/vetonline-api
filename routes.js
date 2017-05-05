@@ -171,13 +171,71 @@ module.exports = {
 			funBase.inserirAnimalMedico(animal, usuario, res);
 		});
 
-		app.put('/inserirAnemia', auth.validate(), function(req, res){
+		app.post('/inserirAnemia', auth.validate(), function(req, res){
 			var usuario = auth.validacaoUsuario();
 			console.log("variavel usuario");
 			console.log(usuario);
-			var animal = req.body;
-			funBase.inserirAnemia(animal, res);
+			var animais= req.params.idAnimal;
+			var anemiaResultado =req.body;
+			funBase.inserirAnemia(usuario, animais, anemiaResultado, res);
 		});
+
+		app.post('/inserirBasofilia/:animais', auth.validate(), function(req, res){
+			var usuario = auth.validacaoUsuario();
+			var basofilia = req.body;
+			var animais = req.params.animais;
+			funBase.inserirBasofilia(basofilia, animais, usuario, res);
+		});
+
+		app.post('/inserirMonocitose/:animais', auth.validate(), function(req, res){
+			var usuario = auth.validacaoUsuario();
+			var monocitose= req.body;
+			var animais= req.params.idAnimal;
+			funBase.inserirMonocitose(monocitose, animais, usuario, res);
+		});
+		app.post('/inserirMonocitopenia/:animais', auth.validate(), function(req, res){
+			var usuario = auth.validacaoUsuario();
+			var monocitopenia= req.body;
+			var animais= req.params.idAnimal;
+			funBase.inserirMonocitopenia(monocitopenia, animais, usuario, res);
+		});
+		app.post('/inserirLinfocitose/:animais', auth.validate(), function(req, res){
+			var usuario = auth.validacaoUsuario();
+			var linfocitose= req.body;
+			var animais= req.params.idAnimal;
+			funBase.inserirLinfocitose(linfocitose, animais, usuario, res);
+		});
+		app.post('/inserirLinfocitopenia/:animais', auth.validate(), function(req, res){
+			var usuario = auth.validacaoUsuario();
+			var linfocitopenia= req.body;
+			var animais= req.params.idAnimal;
+			funBase.inserirLinfocitopenia(linfocitopenia, animais, usuario, res);
+		});
+		app.post('/inserirEosinofilia/:animais', auth.validate(), function(req, res){
+			var usuario = auth.validacaoUsuario();
+			var eosinofilia= req.body;
+			var animais= req.params.idAnimal;
+			funBase.inserirEosinofilia(eosinofilia, animais, usuario, res);
+		});
+		app.post('/inserirEosinopenia/:animais', auth.validate(), function(req, res){
+			var usuario = auth.validacaoUsuario();
+			var eosinopenia= req.body;
+			var animais= req.params.idAnimal;
+			funBase.inserirEosinopenia(eosinopenia, animais, usuario, res);
+		});
+		app.post('/inserirLeucocitose/:animais', auth.validate(), function(req, res){
+			var usuario = auth.validacaoUsuario();
+			var leucocitose= req.body;
+			var animais= req.params.idAnimal;
+			funBase.inserirLeucocitose(leucocitose, animais, usuario, res);
+		});
+		app.post('/inserirLeucocitopenia/:animais', auth.validate(), function(req, res){
+			var usuario = auth.validacaoUsuario();
+			var leucocitopenia= req.body;
+			var animais= req.params.idAnimal;
+			funBase.inserirLeucocitopenia(leucocitopenia, animais, usuario, res);
+		});
+
 
 		app.put('/excluirAuxiliar/:idusuario', auth.validate(), function(req,res){
 			var usuario = auth.validacaoUsuario();

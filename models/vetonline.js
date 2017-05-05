@@ -494,9 +494,10 @@ var auth = require('../auth')
 	    });
 	};
 	//passar o animal e o resultado da anemia
-	function inserirAnemia(animal, usuario, res) {
+	function inserirBasofilia(basofilia, animais, usuario, res) {
+	    console.log(basofilia, animais.idAnimal, usuario);
 	    connection.acquire(function(err, con) {
-	      con.query( "update Animal set Animal.Anemia = ? where Animal.Medico = ? and Animal.idAnimal = ?", [animal.idanemia, usuario.idusuario, animal.idAnimal], function(err, result) {
+	      con.query( "", [], function(err, result) {
 	        con.release();
 	        if (err) {
 	          res.send({status: 1, message: 'TODO update failed'});
@@ -506,6 +507,133 @@ var auth = require('../auth')
 	      });
 	    });
 	};
+
+	function inserirMonocitose(monocitose, animais, usuario, res) {
+	    console.log(monocitose, animais, usuario);
+	    connection.acquire(function(err, con) {
+	      con.query( "", [], function(err, result) {
+	        con.release();
+	        if (err) {
+	          res.send({status: 1, message: 'TODO update failed'});
+	        } else {
+	          res.send({status: 0, message: 'TODO updated successfully'});
+	        }
+	      });
+	    });
+	};
+
+	function inserirMonocitopenia(monocitopenia, animais, usuario, res) {
+	    console.log(monocitopenia, animais, usuario);
+	    connection.acquire(function(err, con) {
+	      con.query( "", [], function(err, result) {
+	        con.release();
+	        if (err) {
+	          res.send({status: 1, message: 'TODO update failed'});
+	        } else {
+	          res.send({status: 0, message: 'TODO updated successfully'});
+	        }
+	      });
+	    });
+	};
+
+	function inserirLinfocitose(linfocitose, animais, usuario, res) {
+	    console.log(linfocitose, animais, usuario);
+	    connection.acquire(function(err, con) {
+	      con.query( "", [], function(err, result) {
+	        con.release();
+	        if (err) {
+	          res.send({status: 1, message: 'TODO update failed'});
+	        } else {
+	          res.send({status: 0, message: 'TODO updated successfully'});
+	        }
+	      });
+	    });
+	};
+
+	function inserirLinfocitopenia(linfocitopenia, animais, usuario, res) {
+	    console.log(linfocitopenia, animais, usuario);
+	    connection.acquire(function(err, con) {
+	      con.query( "", [], function(err, result) {
+	        con.release();
+	        if (err) {
+	          res.send({status: 1, message: 'TODO update failed'});
+	        } else {
+	          res.send({status: 0, message: 'TODO updated successfully'});
+	        }
+	      });
+	    });
+	};
+
+	function inserirEosinofilia(eosinofilia, animais, usuario, res) {
+	    console.log(eosinofilia, animais, usuario);
+	    connection.acquire(function(err, con) {
+	      con.query( "", [], function(err, result) {
+	        con.release();
+	        if (err) {
+	          res.send({status: 1, message: 'TODO update failed'});
+	        } else {
+	          res.send({status: 0, message: 'TODO updated successfully'});
+	        }
+	      });
+	    });
+	};
+
+	function inserirEosinopenia(eosinopenia, animais, usuario, res) {
+	    console.log(eosinopenia, animais, usuario);
+	    connection.acquire(function(err, con) {
+	      con.query( "", [], function(err, result) {
+	        con.release();
+	        if (err) {
+	          res.send({status: 1, message: 'TODO update failed'});
+	        } else {
+	          res.send({status: 0, message: 'TODO updated successfully'});
+	        }
+	      });
+	    });
+	};
+
+	function inserirLeucocitose(leucocitose, animais, usuario, res) {
+	    console.log(leucocitose, animais, usuario);
+	    connection.acquire(function(err, con) {
+	      con.query( "", [], function(err, result) {
+	        con.release();
+	        if (err) {
+	          res.send({status: 1, message: 'TODO update failed'});
+	        } else {
+	          res.send({status: 0, message: 'TODO updated successfully'});
+	        }
+	      });
+	    });
+	};
+
+	function inserirLeucocitopenia(leucocitopenia, animais, usuario, res) {
+	    console.log(leucocitopenia, animais, usuario);
+	    connection.acquire(function(err, con) {
+	      con.query( "", [], function(err, result) {
+	        con.release();
+	        if (err) {
+	          res.send({status: 1, message: 'TODO update failed'});
+	        } else {
+	          res.send({status: 0, message: 'TODO updated successfully'});
+	        }
+	      });
+	    });
+	};
+
+	function inserirAnemia(anemiaResultado, animais, usuario, res) {
+	    console.log(anemiaResultado, animais, usuario);
+	    connection.acquire(function(err, con) {
+	      con.query( "", [], function(err, result) {
+	        con.release();
+	        if (err) {
+	          res.send({status: 1, message: 'TODO update failed'});
+	        } else {
+	          res.send({status: 0, message: 'TODO updated successfully'});
+	        }
+	      });
+	    });
+	};
+
 	//Responsavel exclui o animal
 	function deletarAnimalDoResponsavel(animal, usuario, res) {
 	    connection.acquire(function(err, con) {
@@ -859,6 +987,15 @@ module.exports = {
 	 inserirAnimalMedico :  inserirAnimalMedico,
 	 excluirAnimalMedico : excluirAnimalMedico,
 	 inserirAnemia :  inserirAnemia,
+	 inserirBasofilia : inserirBasofilia,
+	 inserirMonocitose : inserirMonocitose,
+	 inserirLinfocitose : inserirLinfocitose,
+	 inserirMonocitopenia : inserirMonocitopenia,
+	 inserirLinfocitopenia : inserirLinfocitopenia,
+	 inserirLeucocitopenia : inserirLeucocitopenia,
+	 inserirEosinopenia : inserirEosinopenia,
+	 inserirEosinofilia : inserirEosinofilia,
+	 inserirLeucocitose : inserirLeucocitose,
 	 deletarAnimalDoResponsavel :  deletarAnimalDoResponsavel,
 	 listarAnimaisDosMedicosAuxiliares :  listarAnimaisDosMedicosAuxiliares,
 	 listarAnimaisDosAuxiliares :  listarAnimaisDosAuxiliares,
