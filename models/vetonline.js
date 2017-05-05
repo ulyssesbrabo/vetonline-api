@@ -554,7 +554,7 @@ var auth = require('../auth')
 	//listarAnimaisAnemia
 	function listarAnimaisAnemia(usuario, res){
 		connection.acquire(function(err, con){
-			con.query("select idEspecie, nomeAnimal from Animal, MedicoAnimal, Medico, Especie, EspecieRaca, Raca, Responsavel where Animal.Especie = EspecieRaca.Especie and EspecieRaca.Especie = Especie.idEspecie and Medico.idusuario = MedicoAnimal.Medico and MedicoAnimal.Animal = Animal.idAnimal and Animal.Raca = EspecieRaca.Raca and EspecieRaca.Raca = Raca.idRaca and Animal.Responsavel = Responsavel.idusuario and Responsavel.status = 1 and MedicoAnimal.status=1 and MedicoAnimal.Medico = ?",[usuario.idusuario], function(err, result){
+			con.query("select idEspecie, idAnimal, nomeAnimal from Animal, MedicoAnimal, Medico, Especie, EspecieRaca, Raca, Responsavel where Animal.Especie = EspecieRaca.Especie and EspecieRaca.Especie = Especie.idEspecie and Medico.idusuario = MedicoAnimal.Medico and MedicoAnimal.Animal = Animal.idAnimal and Animal.Raca = EspecieRaca.Raca and EspecieRaca.Raca = Raca.idRaca and Animal.Responsavel = Responsavel.idusuario and Responsavel.status = 1 and MedicoAnimal.status=1 and MedicoAnimal.Medico = ?",[usuario.idusuario], function(err, result){
 				con.release();
 				res.json(result);
 			});
