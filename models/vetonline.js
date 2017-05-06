@@ -290,7 +290,7 @@ var auth = require('../auth')
 	//Tela dos Medicos: Perfil dos Médicos
 	function perfilMedico(usuario, res){
 		connection.acquire(function(err, con){
-			con.query("select Medico.crmv, nomeMedico, telefoneMedico, emailMedico, perfilMedico, Estados.nomeEstados, Cidade.nomeCidade from Medico, EstadosCidade, Estados, Cidade where Medico.Estado = EstadosCidade.Estados and EstadosCidade.Estados = Estados.idEstados and Medico.Cidade = EstadosCidade.Cidade and EstadosCidade.Cidade = Cidade.idCidade and Medico.idusuario = ?", [usuario.idusuario], function(err, result){
+			con.query("select Medico.crmv, nomeMedico, telefoneMedico, emailMedico, perfilMedico from Medico, EstadosCidade, Estados, Cidade where Medico.Estado = EstadosCidade.Estados and EstadosCidade.Estados = Estados.idEstados and Medico.Cidade = EstadosCidade.Cidade and EstadosCidade.Cidade = Cidade.idCidade and Medico.idusuario = ?", [usuario.idusuario], function(err, result){
 				con.release();
 				res.json(result);
 			});
