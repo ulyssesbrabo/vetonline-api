@@ -99,11 +99,16 @@ module.exports = {
 			funBase.perfilResponsavel(usuario, res);
 		});
 
-		app.get('/Medicos&Auxiliares', auth.validate(), function(req,res, next){  
+		app.get('/listarMedicos', auth.validate(), function(req,res, next){  
 			var usuario = auth.validacaoUsuario();
 			console.log("variavel usuario");
 			console.log(usuario);
 			funBase.listarMedicoseAuxiliares(usuario, res);
+		});
+
+		app.get('/listarAnimaisMedicos', auth.validate(), function(req, res, next){
+			var usuario = auth.validacaoUsuario();
+			funBase.listarAnimaisMedicos(usuario, res);
 		});
 
 		app.get('/AnimaisResponsavel', auth.validate(), function(req,res, next){  
